@@ -14,6 +14,21 @@ import type { RegistryOptions, ExtensionInfo, RegistryLogger } from './types.js'
 import { CHANNEL_CATALOG, getChannelEntries } from './channel-registry.js';
 import { PROVIDER_CATALOG, getProviderEntries } from './provider-registry.js';
 import { TOOL_CATALOG } from './tool-registry.js';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+
+function isPackageInstalled(packageName: string): boolean {
+  if (!packageName) return false;
+
+  // Resolution-only check (no module side effects).
+  try {
+    require.resolve(packageName);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Attempt to dynamically import a package. Returns the module if available,
@@ -33,26 +48,16 @@ async function tryImport(packageName: string): Promise<any | null> {
  */
 export async function getAvailableExtensions(): Promise<ExtensionInfo[]> {
   const allEntries: ExtensionInfo[] = [...TOOL_CATALOG, ...CHANNEL_CATALOG, ...PROVIDER_CATALOG];
-  const checked = await Promise.all(
-    allEntries.map(async (entry) => {
-      const mod = await tryImport(entry.packageName);
-      return { ...entry, available: mod !== null };
-    }),
-  );
-  return checked;
+  // Prefer pure resolution checks. Dynamic-importing every optional dependency
+  // can be very slow in bundler/test runtimes that shim `import.meta`.
+  return allEntries.map((entry) => ({ ...entry, available: isPackageInstalled(entry.packageName) }));
 }
 
 /**
  * Get available channel extensions.
  */
 export async function getAvailableChannels(): Promise<ExtensionInfo[]> {
-  const checked = await Promise.all(
-    CHANNEL_CATALOG.map(async (entry) => {
-      const mod = await tryImport(entry.packageName);
-      return { ...entry, available: mod !== null };
-    }),
-  );
-  return checked;
+  return CHANNEL_CATALOG.map((entry) => ({ ...entry, available: isPackageInstalled(entry.packageName) }));
 }
 
 /**

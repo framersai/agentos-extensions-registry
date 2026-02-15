@@ -3,6 +3,7 @@
  * and getAvailableChannels from the extensions registry.
  */
 
+import { createRequire } from 'node:module';
 import { describe, it, expect, vi } from 'vitest';
 import {
   createCuratedManifest,
@@ -368,9 +369,20 @@ describe('getAvailableChannels', () => {
     expect(names.has('channel-webchat')).toBe(true);
   });
 
-  it('all channels are available=false when packages are not installed', async () => {
+  it('marks a channel available when it is resolvable', async () => {
     const channels = await getAvailableChannels();
-    expect(channels.every((ch) => ch.available === false)).toBe(true);
+    const require = createRequire(import.meta.url);
+
+    for (const ch of channels) {
+      let resolvable = false;
+      try {
+        require.resolve(ch.packageName);
+        resolvable = true;
+      } catch {
+        resolvable = false;
+      }
+      expect(ch.available).toBe(resolvable);
+    }
   });
 
   it('does not include non-channel extensions', async () => {
