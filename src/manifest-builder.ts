@@ -14,18 +14,16 @@ import type { RegistryOptions, ExtensionInfo, RegistryLogger } from './types.js'
 import { CHANNEL_CATALOG, getChannelEntries } from './channel-registry.js';
 import { PROVIDER_CATALOG, getProviderEntries } from './provider-registry.js';
 import { TOOL_CATALOG } from './tool-registry.js';
-import { createRequire } from 'node:module';
-
-const require = createRequire(import.meta.url);
-
 function isPackageInstalled(packageName: string): boolean {
   if (!packageName) return false;
 
-  // Resolution-only check (no module side effects).
+  // Use import.meta.resolve (sync in Node 20.6+) for ESM-native resolution.
+  // This correctly handles packages that only export "import" conditions.
   try {
-    require.resolve(packageName);
+    import.meta.resolve(packageName);
     return true;
   } catch {
+    // Not resolvable
     return false;
   }
 }
