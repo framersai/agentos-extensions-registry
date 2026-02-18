@@ -9,8 +9,8 @@ import { CHANNEL_CATALOG, getChannelEntries, getChannelEntry } from '../src/chan
 // ── Catalog size and uniqueness ─────────────────────────────────────────────
 
 describe('CHANNEL_CATALOG', () => {
-  it('should have exactly 20 entries', () => {
-    expect(CHANNEL_CATALOG).toHaveLength(20);
+  it('should have exactly 26 entries', () => {
+    expect(CHANNEL_CATALOG).toHaveLength(26);
   });
 
   it('should have all unique platform IDs', () => {
@@ -69,6 +69,48 @@ describe('CHANNEL_CATALOG P0 core channels', () => {
       const entry = CHANNEL_CATALOG.find((e) => e.platform === p);
       expect(entry).toBeDefined();
       expect(entry!.defaultPriority).toBe(50);
+    }
+  });
+});
+
+// ── P0 social channels ─────────────────────────────────────────────────────
+
+describe('CHANNEL_CATALOG P0 social channels', () => {
+  const P0_SOCIAL_PLATFORMS = ['twitter', 'instagram', 'reddit', 'youtube'];
+
+  it('should include all P0 social channels', () => {
+    const platforms = new Set(CHANNEL_CATALOG.map((e) => e.platform));
+    for (const p of P0_SOCIAL_PLATFORMS) {
+      expect(platforms.has(p)).toBe(true);
+    }
+  });
+
+  it('P0 social channels should have priority 50', () => {
+    for (const p of P0_SOCIAL_PLATFORMS) {
+      const entry = CHANNEL_CATALOG.find((e) => e.platform === p);
+      expect(entry).toBeDefined();
+      expect(entry!.defaultPriority).toBe(50);
+    }
+  });
+});
+
+// ── P1 social channels ─────────────────────────────────────────────────────
+
+describe('CHANNEL_CATALOG P1 social channels', () => {
+  const P1_SOCIAL_PLATFORMS = ['pinterest', 'tiktok'];
+
+  it('should include all P1 social channels', () => {
+    const platforms = new Set(CHANNEL_CATALOG.map((e) => e.platform));
+    for (const p of P1_SOCIAL_PLATFORMS) {
+      expect(platforms.has(p)).toBe(true);
+    }
+  });
+
+  it('P1 social channels should have priority 40', () => {
+    for (const p of P1_SOCIAL_PLATFORMS) {
+      const entry = CHANNEL_CATALOG.find((e) => e.platform === p);
+      expect(entry).toBeDefined();
+      expect(entry!.defaultPriority).toBe(40);
     }
   });
 });
@@ -158,5 +200,13 @@ describe('getChannelEntry', () => {
   it('should return undefined for an unknown platform', () => {
     const entry = getChannelEntry('nonexistent');
     expect(entry).toBeUndefined();
+  });
+
+  it('should return the correct entry for a social platform', () => {
+    const entry = getChannelEntry('twitter');
+    expect(entry).toBeDefined();
+    expect(entry!.platform).toBe('twitter');
+    expect(entry!.name).toBe('channel-twitter');
+    expect(entry!.sdkPackage).toBe('twitter-api-v2');
   });
 });

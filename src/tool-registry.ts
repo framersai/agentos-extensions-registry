@@ -117,6 +117,58 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     available: false,
   },
 
+  // ── Browser Automation & Research ──
+  {
+    packageName: '@framers/agentos-ext-browser-automation',
+    name: 'browser-automation',
+    category: 'tool',
+    displayName: 'Browser Automation',
+    description: 'Full browser automation via Playwright — navigate, click, fill, screenshot, extract, sessions, captcha solving, proxy rotation.',
+    requiredSecrets: [],
+    defaultPriority: 20,
+    available: false,
+  },
+  {
+    packageName: '@framers/agentos-ext-deep-research',
+    name: 'deep-research',
+    category: 'tool',
+    displayName: 'Deep Research',
+    description: 'Multi-source investigation — academic papers, web aggregation, scraping, trending, cross-referencing.',
+    requiredSecrets: ['serper.apiKey'],
+    defaultPriority: 25,
+    available: false,
+  },
+  {
+    packageName: '@framers/agentos-ext-content-extraction',
+    name: 'content-extraction',
+    category: 'tool',
+    displayName: 'Content Extraction',
+    description: 'Extract clean content from URLs, YouTube transcripts, Wikipedia, PDFs, and structured web data.',
+    requiredSecrets: [],
+    defaultPriority: 25,
+    available: false,
+  },
+  {
+    packageName: '@framers/agentos-ext-credential-vault',
+    name: 'credential-vault',
+    category: 'tool',
+    displayName: 'Credential Vault',
+    description: 'Encrypted credential storage — set, get, list, rotate, and import API keys and tokens.',
+    requiredSecrets: [],
+    defaultPriority: 15,
+    available: false,
+  },
+  {
+    packageName: '@framers/agentos-ext-notifications',
+    name: 'notifications',
+    category: 'tool',
+    displayName: 'Notifications',
+    description: 'Unified multi-channel notification router — send, broadcast, and schedule notifications.',
+    requiredSecrets: [],
+    defaultPriority: 30,
+    available: false,
+  },
+
   // ── Media: Video / Audio / Culture ──
   {
     packageName: '@framers/agentos-ext-video-search',
