@@ -9,8 +9,8 @@ import { CHANNEL_CATALOG, getChannelEntries, getChannelEntry } from '../src/chan
 // ── Catalog size and uniqueness ─────────────────────────────────────────────
 
 describe('CHANNEL_CATALOG', () => {
-  it('should have exactly 26 entries', () => {
-    expect(CHANNEL_CATALOG).toHaveLength(26);
+  it('should have exactly 28 entries', () => {
+    expect(CHANNEL_CATALOG).toHaveLength(28);
   });
 
   it('should have all unique platform IDs', () => {

@@ -3,7 +3,6 @@
  * and getAvailableChannels from the extensions registry.
  */
 
-import { createRequire } from 'node:module';
 import { describe, it, expect, vi } from 'vitest';
 import {
   createCuratedManifest,
@@ -371,12 +370,11 @@ describe('getAvailableChannels', () => {
 
   it('marks a channel available when it is resolvable', async () => {
     const channels = await getAvailableChannels();
-    const require = createRequire(import.meta.url);
 
     for (const ch of channels) {
       let resolvable = false;
       try {
-        require.resolve(ch.packageName);
+        import.meta.resolve(ch.packageName);
         resolvable = true;
       } catch {
         resolvable = false;
