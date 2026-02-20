@@ -4,6 +4,8 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { CHANNEL_CATALOG, getChannelEntries, getChannelEntry } from '../src/channel-registry';
 
 // ── Catalog size and uniqueness ─────────────────────────────────────────────
@@ -208,5 +210,63 @@ describe('getChannelEntry', () => {
     expect(entry!.platform).toBe('twitter');
     expect(entry!.name).toBe('channel-twitter');
     expect(entry!.sdkPackage).toBe('twitter-api-v2');
+  });
+});
+
+// ── Manifest parity (monorepo check) ────────────────────────────────────────
+
+describe('CHANNEL_CATALOG manifest parity', () => {
+  it('requiredSecrets should match curated channel manifests', () => {
+    const channelsDir = path.resolve(process.cwd(), '../agentos-extensions/registry/curated/channels');
+
+    if (!fs.existsSync(channelsDir)) {
+      // In package-only installs, the curated monorepo directory won't exist.
+      // This parity check is intended for this repo only.
+      return;
+    }
+
+    const byPlatform = new Map(CHANNEL_CATALOG.map((entry) => [entry.platform, entry]));
+    const dirs = fs
+      .readdirSync(channelsDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name);
+
+    const mismatches: Array<{
+      platform: string;
+      dir: string;
+      manifestSecrets: string[];
+      catalogSecrets: string[];
+    }> = [];
+
+    for (const dir of dirs) {
+      const manifestPath = path.join(channelsDir, dir, 'manifest.json');
+      if (!fs.existsSync(manifestPath)) continue;
+
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')) as {
+        platforms?: string[];
+        requiredSecrets?: string[];
+      };
+
+      const platforms = Array.isArray(manifest.platforms) ? manifest.platforms : [];
+      const manifestSecrets = Array.isArray(manifest.requiredSecrets) ? manifest.requiredSecrets : [];
+      const normalizedManifest = [...new Set(manifestSecrets)].sort();
+
+      for (const platform of platforms) {
+        const entry = byPlatform.get(platform);
+        if (!entry) continue;
+
+        const normalizedCatalog = [...new Set(entry.requiredSecrets ?? [])].sort();
+        if (normalizedCatalog.join('|') !== normalizedManifest.join('|')) {
+          mismatches.push({
+            platform,
+            dir,
+            manifestSecrets: normalizedManifest,
+            catalogSecrets: normalizedCatalog,
+          });
+        }
+      }
+    }
+
+    expect(mismatches).toEqual([]);
   });
 });

@@ -62,7 +62,7 @@ export const CHANNEL_CATALOG: ChannelRegistryEntry[] = [
     description:
       'Slack workspace integration via Bolt — supports text, blocks, threads, reactions.',
     sdkPackage: '@slack/bolt',
-    requiredSecrets: ['slack.botToken', 'slack.appToken'],
+    requiredSecrets: ['slack.botToken', 'slack.signingSecret', 'slack.appToken'],
     defaultPriority: 50,
     available: false,
   },
@@ -188,7 +188,7 @@ export const CHANNEL_CATALOG: ChannelRegistryEntry[] = [
     displayName: 'Twitter / X',
     description: 'Twitter/X API v2 — posts, threads, DMs, trending, analytics, scheduling.',
     sdkPackage: 'twitter-api-v2',
-    requiredSecrets: ['twitter.apiKey', 'twitter.apiSecret', 'twitter.accessToken', 'twitter.accessSecret'],
+    requiredSecrets: ['twitter.bearerToken'],
     defaultPriority: 50,
     available: false,
   },

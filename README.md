@@ -27,6 +27,7 @@ const manifest = await createCuratedManifest({
     'discord.botToken': process.env.DISCORD_BOT_TOKEN,
     'slack.botToken': process.env.SLACK_BOT_TOKEN,
     'slack.signingSecret': process.env.SLACK_SIGNING_SECRET,
+    'slack.appToken': process.env.SLACK_APP_TOKEN,
   },
 });
 
@@ -81,7 +82,7 @@ Note: some channels require external binaries (for example `signal-cli` and `zca
 | `telegram` | `@framers/agentos-ext-channel-telegram` | `grammy` | `telegram.botToken` |
 | `whatsapp` | `@framers/agentos-ext-channel-whatsapp` | `@whiskeysockets/baileys` | `whatsapp.sessionData` |
 | `discord` | `@framers/agentos-ext-channel-discord` | `discord.js` | `discord.botToken` |
-| `slack` | `@framers/agentos-ext-channel-slack` | `@slack/bolt` | `slack.botToken`, `slack.appToken` |
+| `slack` | `@framers/agentos-ext-channel-slack` | `@slack/bolt` | `slack.botToken`, `slack.signingSecret`, `slack.appToken` |
 | `webchat` | `@framers/agentos-ext-channel-webchat` | `socket.io` | none |
 | `signal` | `@framers/agentos-ext-channel-signal` | `signal-cli` | `signal.phoneNumber` |
 | `imessage` | `@framers/agentos-ext-channel-imessage` | `bluebubbles-node` | `imessage.serverUrl`, `imessage.password` |
@@ -91,7 +92,7 @@ Note: some channels require external binaries (for example `signal-cli` and `zca
 | `zalo` | `@framers/agentos-ext-channel-zalo` | `zalo-api` | `zalo.botToken` |
 | `email` | `@framers/agentos-ext-channel-email` | `nodemailer` | `email.smtpHost`, `email.smtpUser`, `email.smtpPassword` |
 | `sms` | `@framers/agentos-ext-channel-sms` | `twilio` | `twilio.accountSid`, `twilio.authToken`, `twilio.phoneNumber` |
-| `twitter` | `@framers/agentos-ext-channel-twitter` | `twitter-api-v2` | `twitter.apiKey`, `twitter.apiSecret`, `twitter.accessToken`, `twitter.accessSecret` |
+| `twitter` | `@framers/agentos-ext-channel-twitter` | `twitter-api-v2` | `twitter.bearerToken` |
 | `instagram` | `@framers/agentos-ext-channel-instagram` | `axios` | `instagram.accessToken` |
 | `reddit` | `@framers/agentos-ext-channel-reddit` | `snoowrap` | `reddit.clientId`, `reddit.clientSecret`, `reddit.username`, `reddit.password` |
 | `youtube` | `@framers/agentos-ext-channel-youtube` | `googleapis` | `youtube.apiKey` |
