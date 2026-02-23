@@ -127,6 +127,18 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     available: false,
   },
 
+  // ── Community ──
+  {
+    packageName: '@framers/agentos-ext-founders',
+    name: 'founders',
+    category: 'tool',
+    displayName: 'The Founders',
+    description: 'Gamified build-in-public program — XP, levels, streaks, milestones, cofounder matching, and project showcase.',
+    requiredSecrets: [],
+    defaultPriority: 50,
+    available: false,
+  },
+
   // ── Browser Automation & Research ──
   {
     packageName: '@framers/agentos-ext-browser-automation',
