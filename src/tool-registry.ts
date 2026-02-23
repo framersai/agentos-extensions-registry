@@ -31,7 +31,7 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'web-search',
     category: 'tool',
     displayName: 'Web Search',
-    description: 'Web search using DuckDuckGo by default; optional Serper/Brave API key for enhanced results.',
+    description: 'Web search using SearXNG or DuckDuckGo by default; optional Serper/Brave API key for enhanced results.',
     requiredSecrets: [],
     defaultPriority: 20,
     available: false,
