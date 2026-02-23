@@ -107,6 +107,16 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     available: false,
   },
   {
+    packageName: '@framers/agentos-ext-weather',
+    name: 'weather',
+    category: 'tool',
+    displayName: 'Weather Lookup',
+    description: 'Current weather and forecasts via WeatherAPI.com (preferred) or Open-Meteo (free fallback).',
+    requiredSecrets: [],
+    defaultPriority: 25,
+    available: false,
+  },
+  {
     packageName: '@framers/agentos-ext-skills',
     name: 'skills',
     category: 'tool',

@@ -76,7 +76,8 @@
     "@framers/agentos-ext-giphy": "workspace:*",
     "@framers/agentos-ext-image-search": "workspace:*",
     "@framers/agentos-ext-voice-synthesis": "workspace:*",
-    "@framers/agentos-ext-news-search": "workspace:*"
+    "@framers/agentos-ext-news-search": "workspace:*",
+    "@framers/agentos-ext-weather": "workspace:*"
   },
   "devDependencies": {
     "@framers/agentos": "^0.1.0",
