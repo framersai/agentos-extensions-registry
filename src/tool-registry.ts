@@ -253,6 +253,19 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     available: false,
   },
 
+  // ── Feeds / Integrations ──
+  {
+    packageName: '@framers/agentos-ext-wunderbot-feeds',
+    name: 'wunderbot-feeds',
+    category: 'integration',
+    displayName: 'Wunderbot Feeds',
+    description:
+      'Scheduled Discord feed posting — fetches news, deals, trades, threat intel, papers, jobs, and crypto sniper data from the Python scraper API and posts formatted embeds.',
+    requiredSecrets: ['discord.botToken'],
+    defaultPriority: 30,
+    available: false,
+  },
+
   // ── Voice Providers ──
   {
     packageName: '@framers/agentos-ext-voice-twilio',

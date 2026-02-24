@@ -24,6 +24,8 @@ export interface ProviderRegistryEntry extends ExtensionInfo {
   smallModel: string;
   /** Optional default API base URL. Omitted for SDK-based providers or user-specific endpoints. */
   apiBaseUrl?: string;
+  /** Whether this provider supports OAuth-based authentication (e.g. consumer subscription tokens). */
+  supportsOAuth?: boolean;
 }
 
 /**
@@ -45,6 +47,7 @@ export const PROVIDER_CATALOG: ProviderRegistryEntry[] = [
     defaultModel: 'gpt-4o',
     smallModel: 'gpt-4o-mini',
     apiBaseUrl: 'https://api.openai.com/v1',
+    supportsOAuth: true,
   },
   {
     packageName: '@framers/agentos-ext-provider-anthropic',
