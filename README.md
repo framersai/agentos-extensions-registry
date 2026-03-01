@@ -36,6 +36,12 @@ const agent = new AgentOS();
 await agent.initialize({ extensionManifest: manifest });
 ```
 
+## Notable curated integrations
+
+- `telegram` — Telegram Bot API integration.
+- `wunderbot-feeds` — Wunderbot feed ingestion + social content pipeline pack.
+- `discord` — Discord channel adapter for messaging workflows.
+
 ## API
 
 ### `createCuratedManifest(options?)`
