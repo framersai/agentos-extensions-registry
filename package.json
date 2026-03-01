@@ -77,7 +77,9 @@
     "@framers/agentos-ext-image-search": "workspace:*",
     "@framers/agentos-ext-voice-synthesis": "workspace:*",
     "@framers/agentos-ext-news-search": "workspace:*",
-    "@framers/agentos-ext-weather": "workspace:*"
+    "@framers/agentos-ext-weather": "workspace:*",
+    "@framers/agentos-ext-founders": "workspace:*",
+    "@framers/agentos-ext-wunderbot-feeds": "workspace:*"
   },
   "devDependencies": {
     "@framers/agentos": "^0.1.0",
