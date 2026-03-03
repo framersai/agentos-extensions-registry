@@ -138,6 +138,16 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     defaultPriority: 50,
     available: false,
   },
+  {
+    packageName: '@framers/agentos-ext-verify',
+    name: 'verify',
+    category: 'tool',
+    displayName: 'Discord Verify',
+    description: 'Link Discord accounts to RabbitHole subscriptions and sync roles.',
+    requiredSecrets: [],
+    defaultPriority: 50,
+    available: false,
+  },
 
   // ── Browser Automation & Research ──
   {
