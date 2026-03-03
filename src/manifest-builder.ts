@@ -23,8 +23,9 @@ function isPackageInstalled(packageName: string): boolean {
     import.meta.resolve(packageName);
     return true;
   } catch {
-    // Not resolvable
-    return false;
+    // Not resolvable from this module's context (e.g. pnpm strict isolation).
+    // Defer to dynamic import at load time — tryImport() will catch actual failures.
+    return true;
   }
 }
 
