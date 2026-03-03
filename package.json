@@ -1,6 +1,6 @@
 {
   "name": "@framers/agentos-extensions-registry",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "files": [
     "dist",
     "README.md"
@@ -67,19 +67,16 @@
     }
   },
   "optionalDependencies": {
-    "@framers/agentos-ext-auth": "workspace:*",
-    "@framers/agentos-ext-skills": "workspace:*",
-    "@framers/agentos-ext-web-search": "workspace:*",
-    "@framers/agentos-ext-web-browser": "workspace:*",
-    "@framers/agentos-ext-telegram": "workspace:*",
-    "@framers/agentos-ext-cli-executor": "workspace:*",
-    "@framers/agentos-ext-giphy": "workspace:*",
-    "@framers/agentos-ext-image-search": "workspace:*",
-    "@framers/agentos-ext-voice-synthesis": "workspace:*",
-    "@framers/agentos-ext-news-search": "workspace:*",
-    "@framers/agentos-ext-weather": "workspace:*",
-    "@framers/agentos-ext-founders": "workspace:*",
-    "@framers/agentos-ext-wunderbot-feeds": "workspace:*"
+    "@framers/agentos-ext-auth": "^1.1.0",
+    "@framers/agentos-ext-web-search": "^1.1.1",
+    "@framers/agentos-ext-web-browser": "^1.1.0",
+    "@framers/agentos-ext-telegram": "^1.1.0",
+    "@framers/agentos-ext-cli-executor": "^1.1.0",
+    "@framers/agentos-ext-giphy": "^1.0.0",
+    "@framers/agentos-ext-image-search": "^1.0.0",
+    "@framers/agentos-ext-voice-synthesis": "^1.0.0",
+    "@framers/agentos-ext-news-search": "^1.0.0",
+    "@framers/agentos-ext-weather": "^1.0.0"
   },
   "devDependencies": {
     "@framers/agentos": "^0.1.0",
