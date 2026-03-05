@@ -79,14 +79,14 @@ Returns a list of available channel adapters.
 
 ## Available Channel Extensions
 
-Curated catalog currently includes **28** channel platforms. `getAvailableChannels()` marks a channel as available when its npm package is resolvable in your environment.
+Curated catalog currently includes **37** channel platform packs. `getAvailableChannels()` marks a channel as available when its npm package is resolvable in your environment.
 
 Note: some channels require external binaries (for example `signal-cli` and `zca-cli`) and won’t work in locked-down sandboxes unless CLI execution is explicitly allowed by your runtime policy.
 
 | Platform | Package | SDK | Required secrets |
 |---|---|---|---|
 | `telegram` | `@framers/agentos-ext-channel-telegram` | `grammy` | `telegram.botToken` |
-| `whatsapp` | `@framers/agentos-ext-channel-whatsapp` | `@whiskeysockets/baileys` | `whatsapp.sessionData` |
+| `whatsapp` | `@framers/agentos-ext-channel-whatsapp` | `@whiskeysockets/baileys` | none |
 | `discord` | `@framers/agentos-ext-channel-discord` | `discord.js` | `discord.botToken` |
 | `slack` | `@framers/agentos-ext-channel-slack` | `@slack/bolt` | `slack.botToken`, `slack.signingSecret`, `slack.appToken` |
 | `webchat` | `@framers/agentos-ext-channel-webchat` | `socket.io` | none |
@@ -102,8 +102,17 @@ Note: some channels require external binaries (for example `signal-cli` and `zca
 | `instagram` | `@framers/agentos-ext-channel-instagram` | `axios` | `instagram.accessToken` |
 | `reddit` | `@framers/agentos-ext-channel-reddit` | `snoowrap` | `reddit.clientId`, `reddit.clientSecret`, `reddit.username`, `reddit.password` |
 | `youtube` | `@framers/agentos-ext-channel-youtube` | `googleapis` | `youtube.apiKey` |
+| `linkedin` | `@framers/agentos-ext-channel-linkedin` | `axios` | `linkedin.accessToken` |
+| `facebook` | `@framers/agentos-ext-channel-facebook` | `axios` | `facebook.accessToken` |
+| `threads` | `@framers/agentos-ext-channel-threads` | `axios` | `threads.accessToken` |
+| `bluesky` | `@framers/agentos-ext-channel-bluesky` | `@atproto/api` | `bluesky.handle`, `bluesky.appPassword` |
+| `mastodon` | `@framers/agentos-ext-channel-mastodon` | `masto` | `mastodon.accessToken` |
+| `devto` | `@framers/agentos-ext-channel-blog-publisher` | `axios` | none |
 | `pinterest` | `@framers/agentos-ext-channel-pinterest` | `axios` | `pinterest.accessToken` |
 | `tiktok` | `@framers/agentos-ext-channel-tiktok` | `axios` | `tiktok.accessToken` |
+| `farcaster` | `@framers/agentos-ext-channel-farcaster` | `axios` | `farcaster.signerUuid`, `farcaster.neynarApiKey` |
+| `lemmy` | `@framers/agentos-ext-channel-lemmy` | `lemmy-js-client` | `lemmy.instanceUrl`, `lemmy.username`, `lemmy.password` |
+| `google-business` | `@framers/agentos-ext-channel-google-business` | `googleapis` | `google.accessToken` |
 | `nostr` | `@framers/agentos-ext-channel-nostr` | `nostr-tools` | `nostr.privateKey`, `nostr.relayUrls` |
 | `twitch` | `@framers/agentos-ext-channel-twitch` | `tmi.js` | `twitch.oauthToken`, `twitch.username`, `twitch.channel` |
 | `line` | `@framers/agentos-ext-channel-line` | `@line/bot-sdk` | `line.channelAccessToken`, `line.channelSecret` |

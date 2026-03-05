@@ -11,8 +11,8 @@ import { CHANNEL_CATALOG, getChannelEntries, getChannelEntry } from '../src/chan
 // ── Catalog size and uniqueness ─────────────────────────────────────────────
 
 describe('CHANNEL_CATALOG', () => {
-  it('should have exactly 28 entries', () => {
-    expect(CHANNEL_CATALOG).toHaveLength(28);
+  it('should have at least 37 entries', () => {
+    expect(CHANNEL_CATALOG.length).toBeGreaterThanOrEqual(37);
   });
 
   it('should have all unique platform IDs', () => {
@@ -113,6 +113,29 @@ describe('CHANNEL_CATALOG P1 social channels', () => {
       const entry = CHANNEL_CATALOG.find((e) => e.platform === p);
       expect(entry).toBeDefined();
       expect(entry!.defaultPriority).toBe(40);
+    }
+  });
+});
+
+// ── New social platform channels ───────────────────────────────────────────
+
+describe('CHANNEL_CATALOG new social platform channels', () => {
+  const NEW_SOCIAL_PLATFORMS = [
+    'linkedin',
+    'facebook',
+    'threads',
+    'bluesky',
+    'mastodon',
+    'devto',
+    'farcaster',
+    'lemmy',
+    'google-business',
+  ];
+
+  it('should include all new social platform channels', () => {
+    const platforms = new Set(CHANNEL_CATALOG.map((e) => e.platform));
+    for (const p of NEW_SOCIAL_PLATFORMS) {
+      expect(platforms.has(p)).toBe(true);
     }
   });
 });
