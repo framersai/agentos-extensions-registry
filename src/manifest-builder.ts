@@ -129,6 +129,8 @@ export async function createCuratedManifest(options?: RegistryOptions): Promise<
   );
   const voiceEntries = TOOL_CATALOG.filter((t) => t.category === 'voice');
   const productivityEntries = TOOL_CATALOG.filter((t) => t.category === 'productivity');
+  const cloudEntries = TOOL_CATALOG.filter((t) => t.category === 'cloud');
+  const domainEntries = TOOL_CATALOG.filter((t) => t.category === 'domain');
 
   // ── Tool Extensions ──
   const toolFilter = options?.tools ?? 'all';
@@ -166,6 +168,32 @@ export async function createCuratedManifest(options?: RegistryOptions): Promise<
         : productivityEntries.filter((t) => prodFilter.includes(t.name));
 
   for (const entry of filteredProd) {
+    await loadEntry(entry);
+  }
+
+  // ── Cloud Provider Extensions ──
+  const cloudFilter = options?.cloud ?? 'all';
+  const filteredCloud =
+    cloudFilter === 'none'
+      ? []
+      : cloudFilter === 'all'
+        ? cloudEntries
+        : cloudEntries.filter((t) => cloudFilter.includes(t.name));
+
+  for (const entry of filteredCloud) {
+    await loadEntry(entry);
+  }
+
+  // ── Domain Registrar Extensions ──
+  const domainFilter = options?.domains ?? 'all';
+  const filteredDomains =
+    domainFilter === 'none'
+      ? []
+      : domainFilter === 'all'
+        ? domainEntries
+        : domainEntries.filter((t) => domainFilter.includes(t.name));
+
+  for (const entry of filteredDomains) {
     await loadEntry(entry);
   }
 

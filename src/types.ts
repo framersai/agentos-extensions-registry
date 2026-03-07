@@ -49,6 +49,22 @@ export interface RegistryOptions {
   productivity?: string[] | 'all' | 'none';
 
   /**
+   * Which cloud provider extensions to enable.
+   * - Array of provider names (e.g., 'cloud-vercel', 'cloud-cloudflare-pages').
+   * - `'all'`: enable all available cloud providers (default).
+   * - `'none'`: disable all cloud providers.
+   */
+  cloud?: string[] | 'all' | 'none';
+
+  /**
+   * Which domain registrar extensions to enable.
+   * - Array of registrar names (e.g., 'domain-porkbun', 'domain-namecheap').
+   * - `'all'`: enable all available domain registrars (default).
+   * - `'none'`: disable all domain registrars.
+   */
+  domains?: string[] | 'all' | 'none';
+
+  /**
    * Secrets map (API keys, tokens, credentials).
    * Keys match secret IDs from `extension-secrets.json` (e.g., 'telegram.botToken').
    * Falls back to environment variables if not provided here.
@@ -92,8 +108,8 @@ export interface ExtensionInfo {
   packageName: string;
   /** Short name (e.g., 'telegram'). */
   name: string;
-  /** Category (e.g., 'channel', 'tool', 'integration'). */
-  category: 'channel' | 'tool' | 'integration' | 'provenance' | 'voice' | 'productivity';
+  /** Category (e.g., 'channel', 'tool', 'integration', 'cloud', 'domain'). */
+  category: 'channel' | 'tool' | 'integration' | 'provenance' | 'voice' | 'productivity' | 'cloud' | 'domain';
   /** Whether the package's dependencies are installed and importable. */
   available: boolean;
   /** Human-readable display name. */
