@@ -287,6 +287,18 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     defaultPriority: 45,
     available: false,
   },
+
+  // ── Inter-Agent Delegation ──
+  {
+    packageName: '@framers/agentos-ext-agent-delegation',
+    name: 'agent-delegation',
+    category: 'tool',
+    displayName: 'Agent Delegation',
+    description: 'Inter-agent communication — ping, delegate tasks, and broadcast to remote Wunderland agents over HTTP. Enables multi-agent collaboration and swarm orchestration.',
+    requiredSecrets: [],
+    defaultPriority: 50,
+    available: true,
+  },
   {
     packageName: '@framers/agentos-ext-tool-site-deploy',
     name: 'site-deploy',
