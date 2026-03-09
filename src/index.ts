@@ -40,3 +40,10 @@ export type {
 } from './types.js';
 
 export type { ProviderRegistryEntry } from './provider-registry.js';
+
+export {
+  SECRET_ENV_MAP,
+  getApiKeyGuidance,
+  getSecretEnvVar,
+} from './secret-env-map.js';
+export type { SecretEnvMapping } from './secret-env-map.js';
