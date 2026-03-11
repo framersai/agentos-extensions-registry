@@ -64,7 +64,7 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     description: 'Execute shell commands in a sandboxed environment.',
     requiredSecrets: [],
     defaultPriority: 20,
-    available: false,
+    available: true,
   },
   {
     packageName: '@framers/agentos-ext-giphy',
@@ -158,7 +158,7 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     description: 'Full browser automation via Playwright — navigate, click, fill, screenshot, extract, sessions, captcha solving, proxy rotation.',
     requiredSecrets: [],
     defaultPriority: 20,
-    available: false,
+    available: true,
   },
   {
     packageName: '@framers/agentos-ext-deep-research',
@@ -178,7 +178,7 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     description: 'Extract clean content from URLs, YouTube transcripts, Wikipedia, PDFs, and structured web data.',
     requiredSecrets: [],
     defaultPriority: 25,
-    available: false,
+    available: true,
   },
   {
     packageName: '@framers/agentos-ext-credential-vault',
@@ -188,7 +188,7 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     description: 'Encrypted credential storage — set, get, list, rotate, and import API keys and tokens.',
     requiredSecrets: [],
     defaultPriority: 15,
-    available: false,
+    available: true,
   },
   {
     packageName: '@framers/agentos-ext-notifications',
@@ -496,7 +496,7 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     description: 'Gmail API — send, read, search, reply to emails, manage labels.',
     requiredSecrets: ['google.clientId', 'google.clientSecret', 'google.refreshToken'],
     defaultPriority: 40,
-    available: false,
+    available: true,
   },
 ];
 
