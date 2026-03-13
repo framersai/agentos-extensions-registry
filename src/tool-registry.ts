@@ -276,6 +276,19 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     available: false,
   },
 
+  // ── Memory ──
+  {
+    packageName: '@framers/agentos-ext-cognitive-memory',
+    name: 'cognitive-memory',
+    category: 'tool',
+    displayName: 'Cognitive Memory',
+    description:
+      'Personality-modulated cognitive memory — Ebbinghaus decay, HEXACO-driven encoding, spreading activation, prospective reminders, and consolidation.',
+    requiredSecrets: [],
+    defaultPriority: 15,
+    available: true,
+  },
+
   // ── Social Media Orchestration ──
   {
     packageName: '@framers/agentos-ext-tool-multi-channel-post',
