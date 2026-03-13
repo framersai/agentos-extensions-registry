@@ -9,7 +9,151 @@
  * @module @framers/agentos-extensions-registry/tools
  */
 
-import type { ExtensionInfo } from './types.js';
+import type { ExtensionInfo, RegistryPackContext } from './types.js';
+
+type RuntimeCognitiveMemoryManager = {
+  encode: (
+    input: string,
+    mood: { valence: number; arousal: number; dominance: number },
+    gmiMood: string,
+    options?: Record<string, unknown>
+  ) => Promise<{ id: string }>;
+  retrieve: (
+    query: string,
+    mood: { valence: number; arousal: number; dominance: number },
+    options?: Record<string, unknown>
+  ) => Promise<{ retrieved: unknown[] }>;
+  shutdown: () => Promise<void>;
+  getStore?: () => {
+    softDelete?: (traceId: string) => Promise<void> | void;
+  };
+};
+
+const NEUTRAL_PAD = {
+  valence: 0,
+  arousal: 0,
+  dominance: 0,
+};
+
+function isRuntimeManager(value: unknown): value is RuntimeCognitiveMemoryManager {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof (value as RuntimeCognitiveMemoryManager).encode === 'function' &&
+    typeof (value as RuntimeCognitiveMemoryManager).retrieve === 'function'
+  );
+}
+
+function createBuiltInCognitiveMemoryPack(context: RegistryPackContext) {
+  const priority = typeof context.options?.priority === 'number' ? context.options.priority : 100;
+  let manager: RuntimeCognitiveMemoryManager | null = null;
+
+  return {
+    name: '@framers/agentos:cognitive-memory',
+    version: '1.0.0',
+    descriptors: [
+      {
+        id: 'agentos-cognitive-memory',
+        kind: 'memory-provider',
+        priority,
+        enableByDefault: true,
+        payload: {
+          name: 'cognitive-memory',
+          description:
+            'Cognitive science-grounded memory system with personality-affected encoding/retrieval, Ebbinghaus decay, mood-congruent recall, and Baddeley working memory slots.',
+          supportedTypes: ['episodic', 'semantic', 'procedural', 'prospective'],
+          initialize: async (config: Record<string, unknown>) => {
+            if (!isRuntimeManager(config.manager)) {
+              throw new Error(
+                'Cognitive memory provider requires initialize({ manager }) with encode()/retrieve() methods.'
+              );
+            }
+            manager = config.manager;
+          },
+          store: async (_collectionId: string, data: unknown) => {
+            if (!manager) {
+              throw new Error('Cognitive memory provider not initialized.');
+            }
+            if (typeof data === 'string') {
+              const trace = await manager.encode(data, NEUTRAL_PAD, '');
+              return trace.id;
+            }
+            if (
+              typeof data !== 'object' ||
+              data === null ||
+              typeof (data as any).input !== 'string'
+            ) {
+              throw new Error(
+                'Cognitive memory store() expects a string or { input, mood?, gmiMood?, options? }.'
+              );
+            }
+            const trace = await manager.encode(
+              (data as any).input,
+              (data as any).mood ?? NEUTRAL_PAD,
+              (data as any).gmiMood ?? '',
+              (data as any).options
+            );
+            return trace.id;
+          },
+          query: async (
+            _collectionId: string,
+            query: unknown,
+            options?: Record<string, unknown>
+          ) => {
+            if (!manager) {
+              throw new Error('Cognitive memory provider not initialized.');
+            }
+            const text =
+              typeof query === 'string'
+                ? query
+                : typeof (query as { text?: unknown; query?: unknown } | null)?.text === 'string'
+                  ? String((query as { text: string }).text)
+                  : typeof (query as { query?: unknown } | null)?.query === 'string'
+                    ? String((query as { query: string }).query)
+                    : '';
+            if (!text.trim()) {
+              throw new Error(
+                'Cognitive memory query() expects a string or { text|query, mood? }.'
+              );
+            }
+            const mood =
+              typeof query === 'object' && query !== null && 'mood' in query
+                ? ((query as { mood?: typeof NEUTRAL_PAD }).mood ?? NEUTRAL_PAD)
+                : NEUTRAL_PAD;
+            const result = await manager.retrieve(text, mood, options);
+            return result.retrieved;
+          },
+          delete: async (_collectionId: string, ids: string[]) => {
+            if (!manager) {
+              throw new Error('Cognitive memory provider not initialized.');
+            }
+            const store = manager.getStore?.();
+            if (!store?.softDelete) {
+              throw new Error('Cognitive memory provider does not expose delete support.');
+            }
+            await Promise.all(ids.map((id) => Promise.resolve(store.softDelete?.(id))));
+          },
+          shutdown: async () => {
+            if (!manager) return;
+            await manager.shutdown();
+            manager = null;
+          },
+        },
+        metadata: {
+          version: '1.0.0',
+          cognitiveModels: [
+            'atkinson-shiffrin',
+            'baddeley-working-memory',
+            'ebbinghaus-forgetting',
+            'yerkes-dodson',
+            'tulving-episodic-semantic',
+            'anderson-spreading-activation',
+          ],
+        },
+      },
+    ],
+  };
+}
 
 /**
  * Full catalog of tool, voice, and productivity extensions.
@@ -31,7 +175,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'web-search',
     category: 'tool',
     displayName: 'Web Search',
-    description: 'Web search using SearXNG or DuckDuckGo by default; optional Serper/Brave API key for enhanced results.',
+    description:
+      'Web search using SearXNG or DuckDuckGo by default; optional Serper/Brave API key for enhanced results.',
     requiredSecrets: [],
     defaultPriority: 20,
     available: false,
@@ -111,7 +256,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'weather',
     category: 'tool',
     displayName: 'Weather Lookup',
-    description: 'Current weather and forecasts via WeatherAPI.com (preferred) or Open-Meteo (free fallback).',
+    description:
+      'Current weather and forecasts via WeatherAPI.com (preferred) or Open-Meteo (free fallback).',
     requiredSecrets: [],
     defaultPriority: 25,
     available: false,
@@ -133,7 +279,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'founders',
     category: 'tool',
     displayName: 'The Founders',
-    description: 'Gamified build-in-public program — XP, levels, streaks, milestones, cofounder matching, and project showcase.',
+    description:
+      'Gamified build-in-public program — XP, levels, streaks, milestones, cofounder matching, and project showcase.',
     requiredSecrets: [],
     defaultPriority: 50,
     available: false,
@@ -155,7 +302,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'browser-automation',
     category: 'tool',
     displayName: 'Browser Automation',
-    description: 'Full browser automation via Playwright — navigate, click, fill, screenshot, extract, sessions, captcha solving, proxy rotation.',
+    description:
+      'Full browser automation via Playwright — navigate, click, fill, screenshot, extract, sessions, captcha solving, proxy rotation.',
     requiredSecrets: [],
     defaultPriority: 20,
     available: true,
@@ -165,7 +313,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'deep-research',
     category: 'tool',
     displayName: 'Deep Research',
-    description: 'Multi-source investigation — academic papers, web aggregation, scraping, trending, cross-referencing.',
+    description:
+      'Multi-source investigation — academic papers, web aggregation, scraping, trending, cross-referencing.',
     requiredSecrets: ['serper.apiKey'],
     defaultPriority: 25,
     available: false,
@@ -175,7 +324,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'content-extraction',
     category: 'tool',
     displayName: 'Content Extraction',
-    description: 'Extract clean content from URLs, YouTube transcripts, Wikipedia, PDFs, and structured web data.',
+    description:
+      'Extract clean content from URLs, YouTube transcripts, Wikipedia, PDFs, and structured web data.',
     requiredSecrets: [],
     defaultPriority: 25,
     available: true,
@@ -185,7 +335,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'credential-vault',
     category: 'tool',
     displayName: 'Credential Vault',
-    description: 'Encrypted credential storage — set, get, list, rotate, and import API keys and tokens.',
+    description:
+      'Encrypted credential storage — set, get, list, rotate, and import API keys and tokens.',
     requiredSecrets: [],
     defaultPriority: 15,
     available: true,
@@ -195,7 +346,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'notifications',
     category: 'tool',
     displayName: 'Notifications',
-    description: 'Unified multi-channel notification router — send, broadcast, and schedule notifications.',
+    description:
+      'Unified multi-channel notification router — send, broadcast, and schedule notifications.',
     requiredSecrets: [],
     defaultPriority: 30,
     available: false,
@@ -278,15 +430,16 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
 
   // ── Memory ──
   {
-    packageName: '@framers/agentos-ext-cognitive-memory',
+    packageName: '@framers/agentos',
     name: 'cognitive-memory',
     category: 'tool',
     displayName: 'Cognitive Memory',
     description:
-      'Personality-modulated cognitive memory — Ebbinghaus decay, HEXACO-driven encoding, spreading activation, prospective reminders, and consolidation.',
+      'Built-in cognitive memory provider from AgentOS core — Ebbinghaus decay, HEXACO-driven encoding, spreading activation, reminders, and consolidation.',
     requiredSecrets: [],
     defaultPriority: 15,
     available: true,
+    createPack: createBuiltInCognitiveMemoryPack,
   },
 
   // ── Social Media Orchestration ──
@@ -307,7 +460,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'agent-delegation',
     category: 'tool',
     displayName: 'Agent Delegation',
-    description: 'Inter-agent communication — ping, delegate tasks, and broadcast to remote Wunderland agents over HTTP. Enables multi-agent collaboration and swarm orchestration.',
+    description:
+      'Inter-agent communication — ping, delegate tasks, and broadcast to remote Wunderland agents over HTTP. Enables multi-agent collaboration and swarm orchestration.',
     requiredSecrets: [],
     defaultPriority: 50,
     available: true,
@@ -317,7 +471,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'site-deploy',
     category: 'tool',
     displayName: 'Site Deploy',
-    description: 'Deploy websites end-to-end — build, deploy to cloud, register domain, configure DNS. Orchestrates cloud provider and domain registrar tools.',
+    description:
+      'Deploy websites end-to-end — build, deploy to cloud, register domain, configure DNS. Orchestrates cloud provider and domain registrar tools.',
     requiredSecrets: [],
     defaultPriority: 45,
     available: false,
@@ -329,7 +484,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'cloud-vercel',
     category: 'cloud',
     displayName: 'Vercel',
-    description: 'Deploy to Vercel — Next.js, React, static sites, serverless. Project management, domain configuration, and environment variables.',
+    description:
+      'Deploy to Vercel — Next.js, React, static sites, serverless. Project management, domain configuration, and environment variables.',
     requiredSecrets: ['vercel.token'],
     defaultPriority: 40,
     available: false,
@@ -339,7 +495,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'cloud-cloudflare-pages',
     category: 'cloud',
     displayName: 'Cloudflare Pages',
-    description: 'Deploy to Cloudflare Pages — static sites, JAMstack, Workers. DNS management and edge functions. Free tier available.',
+    description:
+      'Deploy to Cloudflare Pages — static sites, JAMstack, Workers. DNS management and edge functions. Free tier available.',
     requiredSecrets: ['cloudflare.apiToken', 'cloudflare.accountId'],
     defaultPriority: 40,
     available: false,
@@ -349,7 +506,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'cloud-digitalocean',
     category: 'cloud',
     displayName: 'DigitalOcean',
-    description: 'Deploy to DigitalOcean — App Platform (PaaS), Droplets (VPS), managed databases. DNS management included.',
+    description:
+      'Deploy to DigitalOcean — App Platform (PaaS), Droplets (VPS), managed databases. DNS management included.',
     requiredSecrets: ['digitalocean.token'],
     defaultPriority: 40,
     available: false,
@@ -359,7 +517,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'cloud-netlify',
     category: 'cloud',
     displayName: 'Netlify',
-    description: 'Deploy to Netlify — static sites, serverless functions, form handling. Custom domain and environment variable management.',
+    description:
+      'Deploy to Netlify — static sites, serverless functions, form handling. Custom domain and environment variable management.',
     requiredSecrets: ['netlify.token'],
     defaultPriority: 40,
     available: false,
@@ -369,7 +528,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'cloud-linode',
     category: 'cloud',
     displayName: 'Linode / Akamai',
-    description: 'Deploy to Linode — VPS instances, StackScripts, NodeBalancers, DNS. Full infrastructure management.',
+    description:
+      'Deploy to Linode — VPS instances, StackScripts, NodeBalancers, DNS. Full infrastructure management.',
     requiredSecrets: ['linode.token'],
     defaultPriority: 35,
     available: false,
@@ -379,7 +539,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'cloud-aws',
     category: 'cloud',
     displayName: 'AWS',
-    description: 'Deploy to AWS — S3 static hosting, Amplify, Lightsail, CloudFront CDN, Route53 DNS, Lambda. Enterprise-grade infrastructure.',
+    description:
+      'Deploy to AWS — S3 static hosting, Amplify, Lightsail, CloudFront CDN, Route53 DNS, Lambda. Enterprise-grade infrastructure.',
     requiredSecrets: ['aws.accessKeyId', 'aws.secretAccessKey'],
     defaultPriority: 35,
     available: false,
@@ -389,7 +550,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'cloud-heroku',
     category: 'cloud',
     displayName: 'Heroku',
-    description: 'Deploy to Heroku — backend services, add-ons (Postgres, Redis), dyno scaling. Quick prototype deployment.',
+    description:
+      'Deploy to Heroku — backend services, add-ons (Postgres, Redis), dyno scaling. Quick prototype deployment.',
     requiredSecrets: ['heroku.apiKey'],
     defaultPriority: 35,
     available: false,
@@ -399,7 +561,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'cloud-railway',
     category: 'cloud',
     displayName: 'Railway',
-    description: 'Deploy to Railway — full-stack apps with built-in databases (Postgres, Redis, MySQL, MongoDB). Automatic deployments from Git.',
+    description:
+      'Deploy to Railway — full-stack apps with built-in databases (Postgres, Redis, MySQL, MongoDB). Automatic deployments from Git.',
     requiredSecrets: ['railway.token'],
     defaultPriority: 30,
     available: false,
@@ -409,7 +572,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'cloud-flyio',
     category: 'cloud',
     displayName: 'Fly.io',
-    description: 'Deploy to Fly.io — global edge compute, Docker containers, persistent volumes. Low-latency worldwide deployment.',
+    description:
+      'Deploy to Fly.io — global edge compute, Docker containers, persistent volumes. Low-latency worldwide deployment.',
     requiredSecrets: ['fly.token'],
     defaultPriority: 30,
     available: false,
@@ -421,7 +585,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'domain-porkbun',
     category: 'domain',
     displayName: 'Porkbun',
-    description: 'Domain registrar — search, register, and manage domains via Porkbun. DNS record management included.',
+    description:
+      'Domain registrar — search, register, and manage domains via Porkbun. DNS record management included.',
     requiredSecrets: ['porkbun.apiKey', 'porkbun.secretApiKey'],
     defaultPriority: 35,
     available: false,
@@ -431,7 +596,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'domain-namecheap',
     category: 'domain',
     displayName: 'Namecheap',
-    description: 'Domain registrar — search, register, and manage domains via Namecheap. DNS host record management included.',
+    description:
+      'Domain registrar — search, register, and manage domains via Namecheap. DNS host record management included.',
     requiredSecrets: ['namecheap.apiUser', 'namecheap.apiKey'],
     defaultPriority: 35,
     available: false,
@@ -441,7 +607,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'domain-godaddy',
     category: 'domain',
     displayName: 'GoDaddy',
-    description: 'Domain registrar — search, register, and manage domains via GoDaddy. DNS record management included.',
+    description:
+      'Domain registrar — search, register, and manage domains via GoDaddy. DNS record management included.',
     requiredSecrets: ['godaddy.apiKey', 'godaddy.apiSecret'],
     defaultPriority: 35,
     available: false,
@@ -451,7 +618,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     name: 'domain-cloudflare-registrar',
     category: 'domain',
     displayName: 'Cloudflare Registrar',
-    description: 'Domain management via Cloudflare — transfer domains, manage DNS records, configure domain settings.',
+    description:
+      'Domain management via Cloudflare — transfer domains, manage DNS records, configure domain settings.',
     requiredSecrets: ['cloudflare.apiToken', 'cloudflare.accountId'],
     defaultPriority: 35,
     available: false,

@@ -9,11 +9,27 @@
  * @module @framers/agentos-extensions-registry/manifest-builder
  */
 
-import type { ExtensionManifest, ExtensionPackManifestEntry } from '@framers/agentos';
 import type { RegistryOptions, ExtensionInfo, RegistryLogger } from './types.js';
 import { CHANNEL_CATALOG, getChannelEntries } from './channel-registry.js';
 import { PROVIDER_CATALOG, getProviderEntries } from './provider-registry.js';
 import { TOOL_CATALOG } from './tool-registry.js';
+
+interface ExtensionPackManifestEntry {
+  package?: string;
+  module?: string;
+  factory?: () => Promise<unknown> | unknown;
+  priority?: number;
+  enabled?: boolean;
+  options?: Record<string, unknown>;
+  identifier?: string;
+}
+
+interface ExtensionManifest {
+  packs: ExtensionPackManifestEntry[];
+  overrides?: {
+    tools?: Record<string, { enabled?: boolean; priority?: number }>;
+  };
+}
 function isPackageInstalled(packageName: string): boolean {
   if (!packageName) return false;
 
@@ -47,14 +63,20 @@ export async function getAvailableExtensions(): Promise<ExtensionInfo[]> {
   const allEntries: ExtensionInfo[] = [...TOOL_CATALOG, ...CHANNEL_CATALOG, ...PROVIDER_CATALOG];
   // Prefer pure resolution checks. Dynamic-importing every optional dependency
   // can be very slow in bundler/test runtimes that shim `import.meta`.
-  return allEntries.map((entry) => ({ ...entry, available: isPackageInstalled(entry.packageName) }));
+  return allEntries.map((entry) => ({
+    ...entry,
+    available: isPackageInstalled(entry.packageName),
+  }));
 }
 
 /**
  * Get available channel extensions.
  */
 export async function getAvailableChannels(): Promise<ExtensionInfo[]> {
-  return CHANNEL_CATALOG.map((entry) => ({ ...entry, available: isPackageInstalled(entry.packageName) }));
+  return CHANNEL_CATALOG.map((entry) => ({
+    ...entry,
+    available: isPackageInstalled(entry.packageName),
+  }));
 }
 
 /**
@@ -93,19 +115,36 @@ export async function createCuratedManifest(options?: RegistryOptions): Promise<
     const override = options?.overrides?.[entry.name];
     if (override?.enabled === false) return;
 
-    const mod = await tryImport(entry.packageName);
-    if (!mod) return;
-
-    const factory = mod.createExtensionPack ?? mod.default?.createExtensionPack ?? mod.default;
-    if (typeof factory !== 'function') return;
-
     const effectivePriority = override?.priority ?? basePriority + entry.defaultPriority;
     const effectiveOptions = {
       ...override?.options,
       secrets,
       // Most curated packs accept `options.priority` and map it onto descriptor priorities.
-      priority: (override?.options as Record<string, unknown> | undefined)?.priority ?? effectivePriority,
+      priority:
+        (override?.options as Record<string, unknown> | undefined)?.priority ?? effectivePriority,
     };
+
+    if (entry.createPack) {
+      packs.push({
+        factory: () =>
+          entry.createPack?.({
+            options: effectiveOptions,
+            getSecret: (secretId: string) => secrets?.[secretId],
+            logger,
+          }) as Promise<any>,
+        priority: effectivePriority,
+        enabled: true,
+        identifier: `registry:${entry.name}`,
+        options: effectiveOptions,
+      });
+      return;
+    }
+
+    const mod = await tryImport(entry.packageName);
+    if (!mod) return;
+
+    const factory = mod.createExtensionPack ?? mod.default?.createExtensionPack ?? mod.default;
+    if (typeof factory !== 'function') return;
 
     packs.push({
       factory: () =>

@@ -3,7 +3,7 @@
  * @module @framers/agentos-extensions-registry/types
  */
 
-import type { ChannelPlatform } from '@framers/agentos';
+export type ChannelPlatform = string;
 
 export interface RegistryLogger {
   info?: (...args: any[]) => void;
@@ -100,6 +100,12 @@ export interface ExtensionOverrideConfig {
   options?: Record<string, unknown>;
 }
 
+export interface RegistryPackContext {
+  options?: Record<string, unknown>;
+  logger?: RegistryLogger;
+  getSecret?: (secretId: string) => string | undefined;
+}
+
 /**
  * Metadata about an extension available in the registry.
  */
@@ -109,7 +115,15 @@ export interface ExtensionInfo {
   /** Short name (e.g., 'telegram'). */
   name: string;
   /** Category (e.g., 'channel', 'tool', 'integration', 'cloud', 'domain'). */
-  category: 'channel' | 'tool' | 'integration' | 'provenance' | 'voice' | 'productivity' | 'cloud' | 'domain';
+  category:
+    | 'channel'
+    | 'tool'
+    | 'integration'
+    | 'provenance'
+    | 'voice'
+    | 'productivity'
+    | 'cloud'
+    | 'domain';
   /** Whether the package's dependencies are installed and importable. */
   available: boolean;
   /** Human-readable display name. */
@@ -120,6 +134,11 @@ export interface ExtensionInfo {
   requiredSecrets: string[];
   /** Default priority. */
   defaultPriority: number;
+  /**
+   * Optional inline pack factory for built-in capabilities that do not live in
+   * a standalone `@framers/agentos-ext-*` package.
+   */
+  createPack?: (context: RegistryPackContext) => Promise<unknown> | unknown;
 }
 
 /**

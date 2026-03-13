@@ -19,6 +19,8 @@ describe('createCuratedManifest', () => {
       tools: 'none',
       voice: 'none',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
     });
 
     expect(manifest).toHaveProperty('packs');
@@ -45,7 +47,14 @@ describe('createCuratedManifest', () => {
   });
 
   it('attempts to load all channels when channels="all"', async () => {
-    const manifest = await createCuratedManifest({ channels: 'all', tools: 'none', voice: 'none', productivity: 'none' });
+    const manifest = await createCuratedManifest({
+      channels: 'all',
+      tools: 'none',
+      voice: 'none',
+      productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
+    });
     // Since channel packages are not installed, packs should be empty.
     // But any that ARE loaded should be channel-* identifiers.
     expect(
@@ -59,6 +68,8 @@ describe('createCuratedManifest', () => {
       tools: 'none',
       voice: 'none',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
     });
     const allowed = new Set(['registry:channel-telegram', 'registry:channel-discord']);
     expect(manifest.packs.every((p) => allowed.has(String(p.identifier)))).toBe(true);
@@ -70,6 +81,8 @@ describe('createCuratedManifest', () => {
       tools: ['web-search'],
       voice: 'none',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
       overrides: { 'web-search': { priority: 999 } },
     });
 
@@ -106,6 +119,8 @@ describe('createCuratedManifest', () => {
       tools: 'none',
       voice: 'none',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
       basePriority: 100,
     });
     expect(manifest.packs).toEqual([]);
@@ -119,6 +134,8 @@ describe('createCuratedManifest', () => {
       tools: ['web-search'],
       voice: 'none',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
     });
 
     // Since web-search is not installed, packs will be empty — but no other
@@ -138,6 +155,8 @@ describe('createCuratedManifest', () => {
       tools: 'none',
       voice: 'none',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
     });
     expect(manifest.packs).toHaveLength(0);
   });
@@ -163,6 +182,8 @@ describe('createCuratedManifest', () => {
       tools: 'none',
       voice: 'all',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
     });
     // Packages not installed, so packs will be empty.
     // Any that loaded would be voice-* identifiers.
@@ -177,6 +198,8 @@ describe('createCuratedManifest', () => {
       tools: 'none',
       voice: ['voice-twilio'],
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
     });
     for (const pack of manifest.packs) {
       expect(pack.identifier).toBe('registry:voice-twilio');
@@ -206,6 +229,8 @@ describe('createCuratedManifest', () => {
       tools: 'none',
       voice: 'none',
       productivity: 'all',
+      cloud: 'none',
+      domains: 'none',
     });
     // Packages not installed, packs will be empty.
     for (const pack of manifest.packs) {
@@ -234,6 +259,8 @@ describe('createCuratedManifest', () => {
       tools: 'none',
       voice: 'none',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
       overrides: {
         'voice-twilio': { enabled: false },
         'web-search': { priority: 42 },
@@ -253,6 +280,8 @@ describe('createCuratedManifest', () => {
       tools: 'none',
       voice: 'none',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
       logger,
     });
     expect(manifest.packs).toHaveLength(0);
@@ -274,6 +303,26 @@ describe('createCuratedManifest', () => {
     expect(pack!.options).toBeDefined();
     expect((pack!.options as any).secrets).toEqual(secrets);
     expect((pack!.options as any).priority).toBe(pack!.priority);
+  });
+
+  it('materializes the built-in cognitive-memory provider from AgentOS core', async () => {
+    const manifest = await createCuratedManifest({
+      channels: 'none',
+      tools: ['cognitive-memory'],
+      voice: 'none',
+      productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
+    });
+
+    const pack = manifest.packs.find((entry) => entry.identifier === 'registry:cognitive-memory');
+    expect(pack).toBeDefined();
+
+    const resolvedPack = await pack!.factory();
+    expect(resolvedPack.name).toBe('@framers/agentos:cognitive-memory');
+    expect(resolvedPack.descriptors).toHaveLength(1);
+    expect(resolvedPack.descriptors[0]?.id).toBe('agentos-cognitive-memory');
+    expect(resolvedPack.descriptors[0]?.kind).toBe('memory-provider');
   });
 });
 

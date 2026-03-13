@@ -84,6 +84,8 @@ describe('createCuratedManifest with tools: "none"', () => {
       channels: 'none',
       voice: 'none',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
     });
     expect(manifest.packs).toHaveLength(0);
   });
@@ -94,6 +96,8 @@ describe('createCuratedManifest with tools: "none"', () => {
       channels: 'all',
       voice: 'none',
       productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
     });
     // Channel packs are empty because packages are not installed,
     // but any that DID load should be channel-prefixed.
