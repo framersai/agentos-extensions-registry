@@ -10,6 +10,12 @@
  */
 
 import type { ExtensionInfo, RegistryPackContext } from './types.js';
+import {
+  BuiltInAdaptiveVadProvider,
+  ElevenLabsTextToSpeechProvider,
+  OpenAITextToSpeechProvider,
+  OpenAIWhisperSpeechToTextProvider,
+} from '@framers/agentos';
 
 type RuntimeCognitiveMemoryManager = {
   encode: (
@@ -149,6 +155,101 @@ function createBuiltInCognitiveMemoryPack(context: RegistryPackContext) {
             'tulving-episodic-semantic',
             'anderson-spreading-activation',
           ],
+        },
+      },
+    ],
+  };
+}
+
+function createBuiltInSpeechRuntimePack(context: RegistryPackContext) {
+  const priority = typeof context.options?.priority === 'number' ? context.options.priority : 80;
+  const openaiApiKey = context.getSecret?.('openai.apiKey');
+  const elevenLabsApiKey = context.getSecret?.('elevenlabs.apiKey');
+
+  return {
+    name: '@framers/agentos:speech-runtime',
+    version: '1.0.0',
+    descriptors: [
+      {
+        id: 'agentos-openai-whisper-stt',
+        kind: 'stt-provider',
+        priority,
+        enableByDefault: true,
+        requiredSecrets: [{ id: 'openai.apiKey' }],
+        payload: new OpenAIWhisperSpeechToTextProvider({
+          apiKey: openaiApiKey ?? '',
+          model:
+            typeof context.options?.openAIWhisperModel === 'string'
+              ? context.options.openAIWhisperModel
+              : 'whisper-1',
+        }),
+        metadata: {
+          providerId: 'openai-whisper',
+          providerKind: 'stt',
+        },
+      },
+      {
+        id: 'agentos-openai-tts',
+        kind: 'tts-provider',
+        priority,
+        enableByDefault: true,
+        requiredSecrets: [{ id: 'openai.apiKey' }],
+        payload: new OpenAITextToSpeechProvider({
+          apiKey: openaiApiKey ?? '',
+          model:
+            typeof context.options?.openAITtsModel === 'string'
+              ? context.options.openAITtsModel
+              : 'tts-1',
+          voice:
+            typeof context.options?.openAITtsVoice === 'string'
+              ? context.options.openAITtsVoice
+              : 'nova',
+        }),
+        metadata: {
+          providerId: 'openai-tts',
+          providerKind: 'tts',
+        },
+      },
+      {
+        id: 'agentos-elevenlabs-tts',
+        kind: 'tts-provider',
+        priority,
+        enableByDefault: true,
+        requiredSecrets: [{ id: 'elevenlabs.apiKey' }],
+        payload: new ElevenLabsTextToSpeechProvider({
+          apiKey: elevenLabsApiKey ?? '',
+          model:
+            typeof context.options?.elevenLabsModel === 'string'
+              ? context.options.elevenLabsModel
+              : 'eleven_multilingual_v2',
+          voiceId:
+            typeof context.options?.elevenLabsVoiceId === 'string'
+              ? context.options.elevenLabsVoiceId
+              : undefined,
+        }),
+        metadata: {
+          providerId: 'elevenlabs',
+          providerKind: 'tts',
+        },
+      },
+      {
+        id: 'agentos-adaptive-vad',
+        kind: 'vad-provider',
+        priority,
+        enableByDefault: true,
+        payload: new BuiltInAdaptiveVadProvider({
+          sampleRate:
+            typeof context.options?.sampleRate === 'number'
+              ? context.options.sampleRate
+              : 16_000,
+          frameDurationMs:
+            typeof context.options?.frameDurationMs === 'number'
+              ? context.options.frameDurationMs
+              : 20,
+        }),
+        metadata: {
+          providerId: 'agentos-adaptive-vad',
+          providerKind: 'vad',
         },
       },
     ],
@@ -626,6 +727,18 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
   },
 
   // ── Voice Providers ──
+  {
+    packageName: '@framers/agentos:speech-runtime',
+    name: 'speech-runtime',
+    category: 'voice',
+    displayName: 'Speech Runtime',
+    description:
+      'Built-in provider-agnostic speech runtime with OpenAI Whisper, OpenAI TTS, ElevenLabs TTS, and AgentOS adaptive VAD.',
+    requiredSecrets: [],
+    defaultPriority: 25,
+    available: true,
+    createPack: createBuiltInSpeechRuntimePack,
+  },
   {
     packageName: '@framers/agentos-ext-voice-twilio',
     name: 'voice-twilio',

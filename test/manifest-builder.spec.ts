@@ -185,10 +185,9 @@ describe('createCuratedManifest', () => {
       cloud: 'none',
       domains: 'none',
     });
-    // Packages not installed, so packs will be empty.
-    // Any that loaded would be voice-* identifiers.
+    // Optional packages may be absent, but any loaded pack should still come from the voice catalog.
     for (const pack of manifest.packs) {
-      expect(String(pack.identifier)).toMatch(/^registry:voice-/);
+      expect(String(pack.identifier)).toMatch(/^registry:(voice-|speech-runtime$)/);
     }
   });
 
@@ -324,6 +323,32 @@ describe('createCuratedManifest', () => {
     expect(resolvedPack.descriptors[0]?.id).toBe('agentos-cognitive-memory');
     expect(resolvedPack.descriptors[0]?.kind).toBe('memory-provider');
   });
+
+  it('materializes the built-in speech-runtime providers from AgentOS core', async () => {
+    const manifest = await createCuratedManifest({
+      channels: 'none',
+      tools: 'none',
+      voice: ['speech-runtime'],
+      productivity: 'none',
+      cloud: 'none',
+      domains: 'none',
+      secrets: {
+        'openai.apiKey': 'test-openai-key',
+        'elevenlabs.apiKey': 'test-elevenlabs-key',
+      },
+    });
+
+    const pack = manifest.packs.find((entry) => entry.identifier === 'registry:speech-runtime');
+    expect(pack).toBeDefined();
+
+    const resolvedPack = await pack!.factory();
+    expect(resolvedPack.name).toBe('@framers/agentos:speech-runtime');
+    const descriptorIds = resolvedPack.descriptors.map((descriptor) => descriptor.id);
+    expect(descriptorIds).toContain('agentos-openai-whisper-stt');
+    expect(descriptorIds).toContain('agentos-openai-tts');
+    expect(descriptorIds).toContain('agentos-elevenlabs-tts');
+    expect(descriptorIds).toContain('agentos-adaptive-vad');
+  });
 });
 
 // ── getAvailableExtensions ──────────────────────────────────────────────────
@@ -381,6 +406,7 @@ describe('getAvailableExtensions', () => {
     expect(names.has('web-browser')).toBe(true);
     expect(names.has('cli-executor')).toBe(true);
     // Voice providers
+    expect(names.has('speech-runtime')).toBe(true);
     expect(names.has('voice-twilio')).toBe(true);
     expect(names.has('voice-telnyx')).toBe(true);
     expect(names.has('voice-plivo')).toBe(true);
