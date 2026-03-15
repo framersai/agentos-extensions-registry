@@ -256,6 +256,42 @@ function createBuiltInSpeechRuntimePack(context: RegistryPackContext) {
   };
 }
 
+function createLocalPackProxy(relativePath: string) {
+  return async (context: RegistryPackContext) => {
+    const distRelativePath = relativePath.replace(/\/src\/index\.(?:ts|js)$/, '/dist/index.js');
+    const sourceTsRelativePath = relativePath.replace(/\.js$/, '.ts');
+    const candidateUrls = [
+      new URL(distRelativePath, import.meta.url),
+      new URL(relativePath, import.meta.url),
+      ...(sourceTsRelativePath !== relativePath ? [new URL(sourceTsRelativePath, import.meta.url)] : []),
+    ];
+
+    let mod: any;
+    let lastError: unknown;
+    for (const moduleUrl of candidateUrls) {
+      try {
+        mod = await import(moduleUrl.href);
+        break;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    if (!mod) {
+      throw lastError instanceof Error ? lastError : new Error(`Failed to import local extension proxy for ${relativePath}`);
+    }
+
+    const factory = mod.createExtensionPack ?? mod.default?.createExtensionPack ?? mod.default;
+    if (typeof factory !== 'function') {
+      throw new Error(`Local extension ${relativePath} does not export createExtensionPack().`);
+    }
+    return await factory({
+      options: context.options,
+      getSecret: context.getSecret,
+      logger: context.logger,
+    });
+  };
+}
+
 /**
  * Full catalog of tool, voice, and productivity extensions.
  */
@@ -293,6 +329,19 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     requiredSecrets: [],
     defaultPriority: 20,
     available: false,
+  },
+  {
+    packageName: '@framers/agentos-ext-stealth-browser',
+    name: 'stealth-browser',
+    category: 'tool',
+    displayName: 'Stealth Browser',
+    description: 'Anti-detection browser — bypasses bot protection on Amazon, eBay, LinkedIn using puppeteer-extra with stealth plugin.',
+    requiredSecrets: [],
+    defaultPriority: 20,
+    available: true,
+    envVars: [],
+    docsUrl: 'https://docs.wunderland.sh/guides/extensions',
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/research/stealth-browser/src/index.ts'),
   },
   {
     packageName: '@framers/agentos-ext-telegram',
@@ -787,6 +836,9 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     requiredSecrets: ['google.clientId', 'google.clientSecret', 'google.refreshToken'],
     defaultPriority: 40,
     available: false,
+    envVars: ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REFRESH_TOKEN', 'GOOGLE_CALENDAR_REFRESH_TOKEN'],
+    docsUrl: 'https://console.cloud.google.com/apis/credentials',
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/productivity/google-calendar/src/index.js'),
   },
   {
     packageName: '@framers/agentos-ext-email-gmail',
@@ -799,6 +851,7 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     available: true,
     envVars: ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REFRESH_TOKEN'],
     docsUrl: 'https://console.cloud.google.com/apis/credentials',
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/productivity/gmail/src/index.js'),
   },
   {
     packageName: '@framers/agentos-ext-image-generation',
@@ -811,6 +864,7 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     available: true,
     envVars: ['OPENAI_API_KEY', 'STABILITY_API_KEY'],
     docsUrl: 'https://platform.openai.com/api-keys',
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/tools/image-generation/src/index.js'),
   },
 ];
 
