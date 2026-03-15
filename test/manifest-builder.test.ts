@@ -52,6 +52,21 @@ describe('getAvailableExtensions', () => {
     const categories = new Set(extensions.map((ext) => ext.category));
     expect(categories.has('productivity')).toBe(true);
   });
+
+  it('should resolve locally linked productivity and image-generation extensions', async () => {
+    const extensions = await getAvailableExtensions();
+    expect(extensions.find((ext) => ext.name === 'image-generation')?.available).toBe(true);
+    expect(extensions.find((ext) => ext.name === 'email-gmail')?.available).toBe(true);
+    expect(extensions.find((ext) => ext.name === 'calendar-google')?.available).toBe(true);
+  });
+
+  it('should expose API key guidance metadata for image-generation', async () => {
+    const extensions = await getAvailableExtensions();
+    const imageGeneration = extensions.find((ext) => ext.name === 'image-generation');
+    expect(imageGeneration).toBeDefined();
+    expect(imageGeneration?.envVars).toEqual(['OPENAI_API_KEY', 'STABILITY_API_KEY']);
+    expect(imageGeneration?.docsUrl).toBe('https://platform.openai.com/api-keys');
+  });
 });
 
 // ── TOOL_CATALOG via getAvailableExtensions ─────────────────────────────────
@@ -230,5 +245,21 @@ describe('createCuratedManifest manifest structure', () => {
     expect(manifest.overrides!.tools['web-search']).toBeDefined();
     expect(manifest.overrides!.tools['web-search'].priority).toBe(100);
     expect(manifest.overrides!.tools['voice-twilio'].enabled).toBe(false);
+  });
+
+  it('should create manifest entries for local curated proxy packs', async () => {
+    const manifest = await createCuratedManifest({
+      tools: ['image-generation'],
+      productivity: ['calendar-google', 'email-gmail'],
+      voice: 'none',
+      channels: 'none',
+      cloud: 'none',
+      domains: 'none',
+    });
+
+    const identifiers = manifest.packs.map((pack) => String(pack.identifier));
+    expect(identifiers).toContain('registry:image-generation');
+    expect(identifiers).toContain('registry:calendar-google');
+    expect(identifiers).toContain('registry:email-gmail');
   });
 });

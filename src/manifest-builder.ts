@@ -43,6 +43,11 @@ function isPackageInstalled(packageName: string): boolean {
   }
 }
 
+function isEntryAvailable(entry: ExtensionInfo): boolean {
+  if (typeof entry.createPack === 'function') return true;
+  return isPackageInstalled(entry.packageName);
+}
+
 /**
  * Attempt to dynamically import a package. Returns the module if available,
  * or `null` if the package is not installed.
@@ -65,7 +70,7 @@ export async function getAvailableExtensions(): Promise<ExtensionInfo[]> {
   // can be very slow in bundler/test runtimes that shim `import.meta`.
   return allEntries.map((entry) => ({
     ...entry,
-    available: isPackageInstalled(entry.packageName),
+    available: isEntryAvailable(entry),
   }));
 }
 
@@ -75,7 +80,7 @@ export async function getAvailableExtensions(): Promise<ExtensionInfo[]> {
 export async function getAvailableChannels(): Promise<ExtensionInfo[]> {
   return CHANNEL_CATALOG.map((entry) => ({
     ...entry,
-    available: isPackageInstalled(entry.packageName),
+    available: isEntryAvailable(entry),
   }));
 }
 
@@ -137,6 +142,10 @@ export async function createCuratedManifest(options?: RegistryOptions): Promise<
         identifier: `registry:${entry.name}`,
         options: effectiveOptions,
       });
+      return;
+    }
+
+    if (!isPackageInstalled(entry.packageName)) {
       return;
     }
 

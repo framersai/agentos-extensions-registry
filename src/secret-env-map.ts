@@ -25,6 +25,10 @@ export const SECRET_ENV_MAP: Record<string, SecretEnvMapping> = {
   'serper.apiKey': { envVar: 'SERPER_API_KEY', signupUrl: 'https://serper.dev', freeTier: '2,500 queries free' },
   'brave.apiKey': { envVar: 'BRAVE_API_KEY', signupUrl: 'https://brave.com/search/api/', freeTier: '2,000 queries/mo free' },
 
+  // Core AI providers
+  'openai.apiKey': { envVar: 'OPENAI_API_KEY', signupUrl: 'https://platform.openai.com/api-keys' },
+  'stability.apiKey': { envVar: 'STABILITY_API_KEY', signupUrl: 'https://platform.stability.ai/account/keys' },
+
   // Media
   'giphy.apiKey': { envVar: 'GIPHY_API_KEY', signupUrl: 'https://developers.giphy.com', freeTier: 'free tier available' },
   'coverr.apiKey': { envVar: 'COVERR_API_KEY', signupUrl: 'https://coverr.co' },
