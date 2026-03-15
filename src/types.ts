@@ -134,6 +134,10 @@ export interface ExtensionInfo {
   requiredSecrets: string[];
   /** Default priority. */
   defaultPriority: number;
+  /** Environment variables this extension reads. */
+  envVars?: string[];
+  /** URL to obtain API keys. */
+  docsUrl?: string;
   /**
    * Optional inline pack factory for built-in capabilities that do not live in
    * a standalone `@framers/agentos-ext-*` package.

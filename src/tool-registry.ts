@@ -281,6 +281,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     requiredSecrets: [],
     defaultPriority: 20,
     available: false,
+    envVars: ['SERPER_API_KEY', 'BRAVE_API_KEY'],
+    docsUrl: 'https://serper.dev/api-key',
   },
   {
     packageName: '@framers/agentos-ext-web-browser',
@@ -419,6 +421,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     requiredSecrets: ['serper.apiKey'],
     defaultPriority: 25,
     available: false,
+    envVars: ['SERPER_API_KEY'],
+    docsUrl: 'https://serper.dev/api-key',
   },
   {
     packageName: '@framers/agentos-ext-content-extraction',
@@ -737,6 +741,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     requiredSecrets: [],
     defaultPriority: 25,
     available: true,
+    envVars: ['OPENAI_API_KEY', 'ELEVENLABS_API_KEY'],
+    docsUrl: 'https://platform.openai.com/api-keys',
     createPack: createBuiltInSpeechRuntimePack,
   },
   {
@@ -791,6 +797,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     requiredSecrets: ['google.clientId', 'google.clientSecret', 'google.refreshToken'],
     defaultPriority: 40,
     available: true,
+    envVars: ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REFRESH_TOKEN'],
+    docsUrl: 'https://console.cloud.google.com/apis/credentials',
   },
   {
     packageName: '@framers/agentos-ext-image-generation',
@@ -801,6 +809,8 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     requiredSecrets: ['openai.apiKey'],
     defaultPriority: 50,
     available: true,
+    envVars: ['OPENAI_API_KEY', 'STABILITY_API_KEY'],
+    docsUrl: 'https://platform.openai.com/api-keys',
   },
 ];
 
