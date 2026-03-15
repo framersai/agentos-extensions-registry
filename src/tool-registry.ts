@@ -792,6 +792,16 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     defaultPriority: 40,
     available: true,
   },
+  {
+    packageName: '@framers/agentos-ext-image-generation',
+    name: 'image-generation',
+    category: 'tool',
+    displayName: 'Image Generation',
+    description: 'Generate images from text prompts using DALL-E 3 or Stability AI.',
+    requiredSecrets: ['openai.apiKey'],
+    defaultPriority: 50,
+    available: true,
+  },
 ];
 
 /**
