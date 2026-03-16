@@ -386,12 +386,15 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
   {
     packageName: '@framers/agentos-ext-voice-synthesis',
     name: 'voice-synthesis',
-    category: 'tool',
+    category: 'voice',
     displayName: 'Voice Synthesis',
-    description: 'Text-to-speech synthesis via ElevenLabs or similar.',
+    description: 'Text-to-speech synthesis via ElevenLabs or OpenAI TTS. Provides text_to_speech tool.',
     requiredSecrets: [],
+    envVars: ['ELEVENLABS_API_KEY', 'OPENAI_API_KEY'],
+    docsUrl: 'https://elevenlabs.io/docs/api-reference',
     defaultPriority: 30,
-    available: false,
+    available: true,
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/media/voice-synthesis/dist/index.js'),
   },
   {
     packageName: '@framers/agentos-ext-news-search',
