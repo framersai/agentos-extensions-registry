@@ -8,6 +8,8 @@
 
 Curated extension registry bundle for AgentOS. Single import to register channels, tools, and integrations.
 
+[![npm](https://img.shields.io/npm/v/@framers/agentos-extensions-registry?logo=npm&color=cb3837)](https://www.npmjs.com/package/@framers/agentos-extensions-registry)
+
 ## Installation
 
 ```bash
