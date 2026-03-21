@@ -458,6 +458,18 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     envVars: [],
     docsUrl: '/docs/extensions/built-in/code-safety',
   },
+  {
+    packageName: '@framers/agentos-ext-grounding-guard',
+    name: 'grounding-guard',
+    category: 'integration',
+    available: true,
+    displayName: 'Grounding Guard',
+    description: 'RAG-grounded hallucination detection using NLI entailment and LLM-as-judge verification.',
+    requiredSecrets: [],
+    defaultPriority: 8,
+    envVars: [],
+    docsUrl: '/docs/extensions/built-in/grounding-guard',
+  },
 
   // ── Community ──
   {
