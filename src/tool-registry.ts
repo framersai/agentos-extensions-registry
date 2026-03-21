@@ -433,6 +433,20 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     createPack: createLocalPackProxy('../../agentos-ext-skills/src/index.ts'),
   },
 
+  // ── Security / Guardrails ──
+  {
+    packageName: '@framers/agentos-ext-topicality',
+    name: 'topicality',
+    category: 'integration',
+    available: true,
+    displayName: 'Topicality Guardrail',
+    description: 'Embedding-based topic enforcement with allowed/forbidden topics and session-aware drift detection.',
+    requiredSecrets: [],
+    defaultPriority: 3,
+    envVars: [],
+    docsUrl: '/docs/extensions/built-in/topicality',
+  },
+
   // ── Community ──
   {
     packageName: '@framers/agentos-ext-founders',
