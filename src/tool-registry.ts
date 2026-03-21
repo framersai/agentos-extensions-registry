@@ -446,6 +446,18 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     envVars: [],
     docsUrl: '/docs/extensions/built-in/topicality',
   },
+  {
+    packageName: '@framers/agentos-ext-code-safety',
+    name: 'code-safety',
+    category: 'integration',
+    available: true,
+    displayName: 'Code Safety Scanner',
+    description: 'Language-aware regex code scanning for OWASP Top 10 vulnerabilities in LLM-generated code.',
+    requiredSecrets: [],
+    defaultPriority: 4,
+    envVars: [],
+    docsUrl: '/docs/extensions/built-in/code-safety',
+  },
 
   // ── Community ──
   {
