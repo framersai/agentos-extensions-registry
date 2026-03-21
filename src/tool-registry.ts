@@ -435,6 +435,30 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
 
   // ── Security / Guardrails ──
   {
+    packageName: '@framers/agentos-ext-pii-redaction',
+    name: 'pii-redaction',
+    category: 'integration',
+    available: true,
+    displayName: 'PII Redaction',
+    description: 'Four-tier PII detection and redaction (regex + NLP + NER + LLM-as-judge) with streaming support.',
+    requiredSecrets: [],
+    defaultPriority: 10,
+    envVars: ['PII_LLM_API_KEY'],
+    docsUrl: '/docs/extensions/built-in/pii-redaction',
+  },
+  {
+    packageName: '@framers/agentos-ext-ml-classifiers',
+    name: 'ml-classifiers',
+    category: 'integration',
+    available: true,
+    displayName: 'ML Content Classifiers',
+    description: 'Streaming ML content safety classification (toxicity, prompt injection, jailbreak) via ONNX BERT models.',
+    requiredSecrets: [],
+    defaultPriority: 5,
+    envVars: [],
+    docsUrl: '/docs/extensions/built-in/ml-classifiers',
+  },
+  {
     packageName: '@framers/agentos-ext-topicality',
     name: 'topicality',
     category: 'integration',
