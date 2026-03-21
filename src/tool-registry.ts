@@ -862,6 +862,19 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/productivity/gmail/src/index.js'),
   },
   {
+    packageName: '@framers/agentos-ext-email-intelligence',
+    name: 'email-intelligence',
+    category: 'productivity',
+    displayName: 'Email Intelligence',
+    description:
+      'Query email threads, projects, attachments and generate reports via natural language.',
+    requiredSecrets: ['google.clientId', 'google.clientSecret', 'google.refreshToken'],
+    defaultPriority: 40,
+    available: false,
+    envVars: ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REFRESH_TOKEN'],
+    docsUrl: 'https://console.cloud.google.com/apis/credentials',
+  },
+  {
     packageName: '@framers/agentos-ext-image-generation',
     name: 'image-generation',
     category: 'tool',
