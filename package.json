@@ -5,7 +5,7 @@
     "dist",
     "README.md"
   ],
-  "description": "Curated extension registry bundle for AgentOS \u2014 single import to register channels, tools, and integrations",
+  "description": "Extension catalog for AgentOS — channel, tool, and provider metadata with dynamic loading via createCuratedManifest()",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",
