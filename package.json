@@ -74,7 +74,7 @@
     "@framers/agentos-ext-cli-executor": "^1.2.0",
     "@framers/agentos-ext-giphy": "^1.0.0",
     "@framers/agentos-ext-image-search": "^1.0.0",
-    "@framers/agentos-ext-voice-synthesis": "workspace:*",
+    "@framers/agentos-ext-voice-synthesis": "^2.0.0",
     "@framers/agentos-ext-news-search": "^1.0.0",
     "@framers/agentos-ext-weather": "^1.0.0"
   },
