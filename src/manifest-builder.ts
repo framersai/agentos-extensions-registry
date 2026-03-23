@@ -129,7 +129,11 @@ export async function createCuratedManifest(options?: RegistryOptions): Promise<
         (override?.options as Record<string, unknown> | undefined)?.priority ?? effectivePriority,
     };
 
-    if (entry.createPack) {
+    // Prefer npm package over local createPack proxy (npm works outside monorepo)
+    if (entry.packageName && isPackageInstalled(entry.packageName)) {
+      // Fall through to packageName-based loading below
+    } else if (entry.createPack) {
+      // Fallback to local proxy (monorepo development only)
       packs.push({
         factory: () =>
           entry.createPack?.({
@@ -143,9 +147,7 @@ export async function createCuratedManifest(options?: RegistryOptions): Promise<
         options: effectiveOptions,
       });
       return;
-    }
-
-    if (!isPackageInstalled(entry.packageName)) {
+    } else if (!isPackageInstalled(entry.packageName)) {
       return;
     }
 
