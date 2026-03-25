@@ -76,10 +76,28 @@
     "@framers/agentos-ext-image-search": "^1.0.0",
     "@framers/agentos-ext-voice-synthesis": "^2.0.0",
     "@framers/agentos-ext-news-search": "^1.0.0",
-    "@framers/agentos-ext-weather": "^1.0.0"
+    "@framers/agentos-ext-weather": "^1.0.0",
+    "@framers/agentos-ext-streaming-stt-deepgram": ">=0.1.0",
+    "@framers/agentos-ext-streaming-stt-whisper": ">=0.1.0",
+    "@framers/agentos-ext-streaming-tts-openai": ">=0.1.0",
+    "@framers/agentos-ext-streaming-tts-elevenlabs": ">=0.1.0",
+    "@framers/agentos-ext-diarization": ">=0.1.0",
+    "@framers/agentos-ext-endpoint-semantic": ">=0.1.0",
+    "@framers/agentos-ext-google-cloud-stt": ">=0.1.0",
+    "@framers/agentos-ext-google-cloud-tts": ">=0.1.0",
+    "@framers/agentos-ext-amazon-polly": ">=0.1.0",
+    "@framers/agentos-ext-vosk": ">=0.1.0",
+    "@framers/agentos-ext-piper": ">=0.1.0",
+    "@framers/agentos-ext-porcupine": ">=0.1.0",
+    "@framers/agentos-ext-openwakeword": ">=0.1.0",
+    "@framers/agentos-ext-pii-redaction": ">=0.1.0",
+    "@framers/agentos-ext-ml-classifiers": ">=0.1.0",
+    "@framers/agentos-ext-topicality": ">=0.1.0",
+    "@framers/agentos-ext-code-safety": ">=0.1.0",
+    "@framers/agentos-ext-grounding-guard": ">=0.1.0"
   },
   "devDependencies": {
-    "@framers/agentos": "^0.1.47",
+    "@framers/agentos": "^0.1.80",
     "typescript": "^5.4.5",
     "vitest": "^1.0.0"
   }
