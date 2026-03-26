@@ -1127,6 +1127,68 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     docsUrl: 'https://platform.openai.com/api-keys',
     createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/tools/image-generation/src/index.js'),
   },
+
+  // ── Image Editing & Vision ──
+  {
+    packageName: '@framers/agentos-ext-image-editing',
+    name: 'image-editing',
+    category: 'tool',
+    displayName: 'Image Editing',
+    description:
+      'Edit images with img2img, inpainting, outpainting, and style transfer.',
+    requiredSecrets: [],
+    defaultPriority: 50,
+    available: true,
+    envVars: ['OPENAI_API_KEY', 'STABILITY_API_KEY', 'REPLICATE_API_TOKEN'],
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/tools/image-editing/src/index.ts'),
+  },
+  {
+    packageName: '@framers/agentos-ext-image-upscale',
+    name: 'image-upscale',
+    category: 'tool',
+    displayName: 'Image Upscaling',
+    description: 'Super-resolution upscaling (2x/4x) for images.',
+    requiredSecrets: [],
+    defaultPriority: 50,
+    available: false,
+    envVars: ['REPLICATE_API_TOKEN'],
+  },
+  {
+    packageName: '@framers/agentos-ext-image-variation',
+    name: 'image-variation',
+    category: 'tool',
+    displayName: 'Image Variations',
+    description: 'Generate variations of an existing image.',
+    requiredSecrets: [],
+    defaultPriority: 50,
+    available: false,
+    envVars: ['OPENAI_API_KEY'],
+  },
+  {
+    packageName: '@framers/agentos-ext-vision-pipeline',
+    name: 'vision-pipeline',
+    category: 'tool',
+    displayName: 'Vision & OCR Pipeline',
+    description:
+      'Progressive vision pipeline with PaddleOCR, TrOCR, Florence-2, CLIP, and cloud vision.',
+    requiredSecrets: [],
+    defaultPriority: 45,
+    available: true,
+    envVars: ['OPENAI_API_KEY'],
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/tools/vision-pipeline/src/index.ts'),
+  },
+
+  // ── WebRTC Transport ──
+  {
+    packageName: '@framers/agentos-ext-webrtc-transport',
+    name: 'webrtc-transport',
+    category: 'voice',
+    displayName: 'WebRTC Voice Transport',
+    description: 'Low-latency WebRTC DataChannel transport for voice streaming.',
+    requiredSecrets: [],
+    defaultPriority: 30,
+    available: false,
+  },
 ];
 
 /**

@@ -340,6 +340,36 @@ export const PROVIDER_CATALOG: ProviderRegistryEntry[] = [
     apiBaseUrl: 'https://api.cohere.com/v1',
   },
 
+  // ── Image Generation Providers ──
+  {
+    packageName: '@framers/agentos-ext-provider-bfl',
+    name: 'provider-bfl',
+    category: 'integration',
+    providerId: 'bfl',
+    displayName: 'Black Forest Labs (Flux)',
+    description: 'Black Forest Labs API — Flux Pro, Flux Dev, and Flux Schnell image generation models.',
+    requiredSecrets: ['bfl.apiKey'],
+    defaultPriority: 60,
+    available: false,
+    defaultModel: 'flux-pro',
+    smallModel: 'flux-schnell',
+    apiBaseUrl: 'https://api.bfl.ml/v1',
+  },
+  {
+    packageName: '@framers/agentos-ext-provider-fal',
+    name: 'provider-fal',
+    category: 'integration',
+    providerId: 'fal',
+    displayName: 'Fal.ai',
+    description: 'Fal.ai API — serverless GPU inference for Flux, Stable Diffusion, and community image models.',
+    requiredSecrets: ['fal.apiKey'],
+    defaultPriority: 60,
+    available: false,
+    defaultModel: 'fal-ai/flux/dev',
+    smallModel: 'fal-ai/flux/schnell',
+    apiBaseUrl: 'https://fal.run',
+  },
+
   // ── Aggregator / Router Providers ──
   {
     packageName: '@framers/agentos-ext-provider-venice',
