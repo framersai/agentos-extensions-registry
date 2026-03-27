@@ -50,6 +50,20 @@ export const PROVIDER_CATALOG: ProviderRegistryEntry[] = [
     supportsOAuth: true,
   },
   {
+    packageName: '@framers/agentos-ext-provider-claude-code-cli',
+    name: 'provider-claude-code-cli',
+    category: 'integration',
+    providerId: 'claude-code-cli',
+    displayName: 'Claude Code CLI',
+    description:
+      'Use Claude via your local Claude Code CLI subscription — no API key required. Requires Claude Code installed and authenticated on the user\'s machine.',
+    requiredSecrets: [],
+    defaultPriority: 95,
+    available: false,
+    defaultModel: 'claude-sonnet-4-20250514',
+    smallModel: 'claude-haiku-4-5-20251001',
+  },
+  {
     packageName: '@framers/agentos-ext-provider-anthropic',
     name: 'provider-anthropic',
     category: 'integration',
