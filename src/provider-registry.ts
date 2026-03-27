@@ -64,6 +64,20 @@ export const PROVIDER_CATALOG: ProviderRegistryEntry[] = [
     smallModel: 'claude-haiku-4-5-20251001',
   },
   {
+    packageName: '@framers/agentos-ext-provider-gemini-cli',
+    name: 'provider-gemini-cli',
+    category: 'integration',
+    providerId: 'gemini-cli',
+    displayName: 'Gemini CLI',
+    description:
+      'Use Gemini via your local Gemini CLI with Google account login — no API key required. Free tier, AI Pro, or AI Ultra.',
+    requiredSecrets: [],
+    defaultPriority: 94,
+    available: false,
+    defaultModel: 'gemini-2.5-flash',
+    smallModel: 'gemini-2.0-flash-lite',
+  },
+  {
     packageName: '@framers/agentos-ext-provider-anthropic',
     name: 'provider-anthropic',
     category: 'integration',
