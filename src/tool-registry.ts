@@ -430,7 +430,6 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     defaultPriority: 15,
     available: true,
     docsUrl: 'https://docs.agentos.sh/guides/skills-system',
-    createPack: createLocalPackProxy('../../agentos-ext-skills/src/index.ts'),
   },
 
   // ── Security / Guardrails ──
