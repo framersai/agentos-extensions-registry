@@ -82,6 +82,12 @@ export const SECRET_ENV_MAP: Record<string, SecretEnvMapping> = {
   'google.clientId': { envVar: 'GOOGLE_CLIENT_ID', signupUrl: 'https://console.cloud.google.com/apis/credentials' },
   'google.clientSecret': { envVar: 'GOOGLE_CLIENT_SECRET', signupUrl: 'https://console.cloud.google.com/apis/credentials' },
   'google.refreshToken': { envVar: 'GOOGLE_REFRESH_TOKEN', signupUrl: 'https://console.cloud.google.com/apis/credentials' },
+
+  // Entertainment
+  'omdb.apiKey': { envVar: 'OMDB_API_KEY', signupUrl: 'https://www.omdbapi.com/apikey.aspx', freeTier: '1,000 requests/day' },
+
+  // Company Intelligence
+  'clearbit.apiKey': { envVar: 'CLEARBIT_API_KEY', signupUrl: 'https://dashboard.clearbit.com/signup', freeTier: 'free tier via HubSpot' },
 };
 
 /** Pattern-match keywords that indicate an API key error. */

@@ -1378,6 +1378,63 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     defaultPriority: 30,
     available: false,
   },
+
+  // ── Web Scraper ──
+  {
+    packageName: '@framers/agentos-ext-web-scraper',
+    name: 'web-scraper',
+    category: 'tool',
+    displayName: 'Web Scraper',
+    description: 'Intelligent web scraping with progressive fallbacks, proxy rotation, and LLM extraction.',
+    requiredSecrets: [],
+    defaultPriority: 45,
+    available: true,
+    envVars: ['SCRAPER_PROXY_URL', 'SCRAPER_PROXY_LIST'],
+    docsUrl: 'https://docs.wunderland.sh/extensions/web-scraper',
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/research/web-scraper/src/index.ts'),
+  },
+
+  // ── Entertainment ──
+  {
+    packageName: '@framers/agentos-ext-letterboxd',
+    name: 'letterboxd',
+    category: 'tool',
+    displayName: 'Letterboxd',
+    description: 'Film ratings, reviews, and community data from Letterboxd.',
+    requiredSecrets: [],
+    defaultPriority: 50,
+    available: true,
+    docsUrl: 'https://letterboxd.com',
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/media/letterboxd/src/index.ts'),
+  },
+  {
+    packageName: '@framers/agentos-ext-omdb',
+    name: 'omdb',
+    category: 'tool',
+    displayName: 'OMDB',
+    description: 'Movie and TV data with IMDB, Rotten Tomatoes, and Metacritic scores via OMDB API.',
+    requiredSecrets: ['omdb.apiKey'],
+    defaultPriority: 50,
+    available: true,
+    envVars: ['OMDB_API_KEY'],
+    docsUrl: 'https://www.omdbapi.com',
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/media/omdb/src/index.ts'),
+  },
+
+  // ── Company Intelligence ──
+  {
+    packageName: '@framers/agentos-ext-clearbit',
+    name: 'clearbit',
+    category: 'integration',
+    displayName: 'Clearbit Enrichment',
+    description: 'Company and contact enrichment by domain or email via Clearbit API.',
+    requiredSecrets: ['clearbit.apiKey'],
+    defaultPriority: 50,
+    available: true,
+    envVars: ['CLEARBIT_API_KEY'],
+    docsUrl: 'https://dashboard.clearbit.com',
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/integrations/clearbit/src/index.ts'),
+  },
 ];
 
 /**
