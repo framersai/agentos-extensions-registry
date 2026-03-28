@@ -1449,6 +1449,18 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     docsUrl: 'https://docs.wunderland.sh/extensions/document-export',
     createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/productivity/document-export/src/index.ts'),
   },
+  {
+    packageName: '@framers/agentos-ext-widget-generator',
+    name: 'widget-generator',
+    category: 'productivity',
+    displayName: 'Interactive Widgets',
+    description: 'Generate interactive HTML/CSS/JS widgets with Three.js, D3.js, Chart.js, and more.',
+    requiredSecrets: [],
+    defaultPriority: 50,
+    available: true,
+    docsUrl: 'https://docs.wunderland.sh/extensions/widget-generator',
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/productivity/widget-generator/src/index.ts'),
+  },
 ];
 
 /**
