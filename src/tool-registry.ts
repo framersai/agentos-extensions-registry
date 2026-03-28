@@ -1435,6 +1435,20 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     docsUrl: 'https://dashboard.clearbit.com',
     createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/integrations/clearbit/src/index.ts'),
   },
+
+  // ── Document Export ──
+  {
+    packageName: '@framers/agentos-ext-document-export',
+    name: 'document-export',
+    category: 'productivity',
+    displayName: 'Document Export',
+    description: 'Generate PDF, DOCX, PPTX, CSV, and XLSX documents from structured content with charts, tables, and themes.',
+    requiredSecrets: [],
+    defaultPriority: 50,
+    available: true,
+    docsUrl: 'https://docs.wunderland.sh/extensions/document-export',
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/productivity/document-export/src/index.ts'),
+  },
 ];
 
 /**
