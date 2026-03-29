@@ -126,6 +126,7 @@
     "@framers/agentos-ext-cloud-railway": ">=0.1.0",
     "@framers/agentos-ext-cloud-vercel": ">=0.1.0",
     "@framers/agentos-ext-code-safety": ">=0.1.0",
+    "@framers/agentos-ext-content-policy-rewriter": ">=0.1.0",
     "@framers/agentos-ext-content-extraction": ">=0.1.0",
     "@framers/agentos-ext-credential-vault": ">=0.1.0",
     "@framers/agentos-ext-deep-research": ">=0.1.0",
