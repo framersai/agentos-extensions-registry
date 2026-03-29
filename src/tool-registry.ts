@@ -493,6 +493,18 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     envVars: [],
     docsUrl: '/docs/extensions/built-in/grounding-guard',
   },
+  {
+    packageName: '@framers/agentos-ext-content-policy-rewriter',
+    name: 'content-policy-rewriter',
+    category: 'integration',
+    available: true,
+    displayName: 'Content Policy Rewriter',
+    description: 'Opt-in content policy guardrail — detects violations (adult, profanity, violence, hate speech, illegal content) and rewrites or blocks output via LLM judge. 8 categories, 4 presets (uncensored, uncensored-safe, family-friendly, enterprise).',
+    requiredSecrets: [],
+    defaultPriority: 3,
+    envVars: ['OPENAI_API_KEY'],
+    docsUrl: '/docs/extensions/built-in/content-policy-rewriter',
+  },
 
   // ── Community ──
   {
