@@ -31,9 +31,14 @@
       "import": "./dist/types.js",
       "types": "./dist/types.d.ts"
     },
+    "./capability-catalog": {
+      "import": "./dist/capability-catalog.js",
+      "types": "./dist/capability-catalog.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
+    "prebuild": "node scripts/generate-capability-catalog.mjs",
     "build": "tsc",
     "clean": "rm -rf dist",
     "test": "vitest run --testTimeout 60000"

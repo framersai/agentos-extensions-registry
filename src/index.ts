@@ -47,3 +47,6 @@ export {
   getSecretEnvVar,
 } from './secret-env-map.js';
 export type { SecretEnvMapping } from './secret-env-map.js';
+
+export { CAPABILITY_CATALOG } from './capability-catalog.js';
+export type { CatalogEntry } from './capability-catalog.js';
