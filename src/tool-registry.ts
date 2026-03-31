@@ -1529,6 +1529,18 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     envVars: ['TRULIA_RAPIDAPI_KEY', 'FIRECRAWL_API_KEY'],
     createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/research/trulia-search/src/index.ts'),
   },
+  {
+    packageName: '@framers/agentos-ext-citation-verifier',
+    name: 'citation-verifier',
+    category: 'research',
+    displayName: 'Citation Verifier',
+    description: 'Verify claims in text against sources using semantic similarity with optional web fallback.',
+    requiredSecrets: [],
+    defaultPriority: 40,
+    available: true,
+    envVars: ['SERPER_API_KEY'],
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/research/citation-verifier/src/index.ts'),
+  },
 ];
 
 /**
