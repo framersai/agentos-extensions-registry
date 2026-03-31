@@ -1517,6 +1517,18 @@ export const TOOL_CATALOG: ExtensionInfo[] = [
     available: true,
     createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/safety/content-policy-rewriter/src/index.ts'),
   },
+  {
+    packageName: '@framers/agentos-ext-trulia-search',
+    name: 'trulia-search',
+    category: 'research',
+    displayName: 'Trulia Property Search',
+    description: 'Search real estate properties on Trulia by location, price, bedrooms, and property type.',
+    requiredSecrets: [],
+    defaultPriority: 50,
+    available: true,
+    envVars: ['TRULIA_RAPIDAPI_KEY', 'FIRECRAWL_API_KEY'],
+    createPack: createLocalPackProxy('../../agentos-extensions/registry/curated/research/trulia-search/src/index.ts'),
+  },
 ];
 
 /**
