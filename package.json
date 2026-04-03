@@ -64,7 +64,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@framers/agentos": "^0.1.166"
+    "@framers/agentos": "^0.1.167"
   },
   "peerDependenciesMeta": {
     "@framers/agentos": {
@@ -218,7 +218,7 @@
     "@framers/agentos-skills": ">=1.0.0"
   },
   "devDependencies": {
-    "@framers/agentos": "^0.1.166",
+    "@framers/agentos": "^0.1.167",
     "typescript": "^5.4.5",
     "vitest": "^1.0.0"
   }
