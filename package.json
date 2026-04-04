@@ -13,26 +13,32 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
+      "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
     "./channels": {
       "import": "./dist/channel-registry.js",
+      "default": "./dist/channel-registry.js",
       "types": "./dist/channel-registry.d.ts"
     },
     "./providers": {
       "import": "./dist/provider-registry.js",
+      "default": "./dist/provider-registry.js",
       "types": "./dist/provider-registry.d.ts"
     },
     "./tools": {
       "import": "./dist/tool-registry.js",
+      "default": "./dist/tool-registry.js",
       "types": "./dist/tool-registry.d.ts"
     },
     "./types": {
       "import": "./dist/types.js",
+      "default": "./dist/types.js",
       "types": "./dist/types.d.ts"
     },
     "./capability-catalog": {
       "import": "./dist/capability-catalog.js",
+      "default": "./dist/capability-catalog.js",
       "types": "./dist/capability-catalog.d.ts"
     },
     "./package.json": "./package.json"
@@ -64,7 +70,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@framers/agentos": "^0.1.167"
+    "@framers/agentos": "^0.1.175"
   },
   "peerDependenciesMeta": {
     "@framers/agentos": {
@@ -218,7 +224,7 @@
     "@framers/agentos-skills": ">=1.0.0"
   },
   "devDependencies": {
-    "@framers/agentos": "^0.1.167",
+    "@framers/agentos": "^0.1.175",
     "typescript": "^5.4.5",
     "vitest": "^1.0.0"
   }
