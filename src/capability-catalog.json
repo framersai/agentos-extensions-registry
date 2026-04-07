@@ -1175,7 +1175,7 @@
   {
     "id": "com.framers.research.web-search",
     "name": "Web Search Extension",
-    "description": "Professional web search, research aggregation, and fact-checking capabilities for AgentOS",
+    "description": "Multi-provider web search with Firecrawl, Tavily, Serper, Brave — RRF fusion, semantic dedup, Cohere/LLM neural reranking, research aggregation, and fact-checking",
     "category": "productivity",
     "tools": [
       "web_search",
@@ -1257,6 +1257,16 @@
     "requiredSecrets": []
   },
   {
+    "id": "com.framers.tools.citation-verifier",
+    "name": "Citation Verifier",
+    "description": "Verify claims in text against sources using semantic similarity. Supports web search fallback for unverifiable claims.",
+    "category": "tool",
+    "tools": [
+      "verify_citations"
+    ],
+    "requiredSecrets": []
+  },
+  {
     "id": "com.framers.tools.image-editing",
     "name": "Image Editing",
     "description": "Edit images with img2img transformation, inpainting, outpainting, upscaling, and variations using OpenAI, Stability AI, or Replicate.",
@@ -1275,6 +1285,16 @@
     "category": "tool",
     "tools": [
       "generate_image"
+    ],
+    "requiredSecrets": []
+  },
+  {
+    "id": "com.framers.tools.local-file-search",
+    "name": "Local File Search",
+    "description": "Search for files on the local filesystem by fuzzy name matching. Supports denylist filtering and relevance-ranked results.",
+    "category": "tool",
+    "tools": [
+      "local_file_search"
     ],
     "requiredSecrets": []
   },
@@ -1299,6 +1319,16 @@
     "requiredSecrets": []
   },
   {
+    "id": "com.framers.tools.send-file-to-channel",
+    "name": "Send File to Channel",
+    "description": "Send a local file to the user via the current chat channel with platform-aware size limit enforcement.",
+    "category": "tool",
+    "tools": [
+      "send_file_to_channel"
+    ],
+    "requiredSecrets": []
+  },
+  {
     "id": "com.framers.tools.site-deploy",
     "name": "Site Deploy Orchestration",
     "description": "High-level deployment orchestrator that deploys sites from source to any supported cloud provider (Vercel, Cloudflare Pages, DigitalOcean, Netlify, Heroku, AWS, Linode, Railway, Fly.io) with optional custom domain registration and DNS configuration via any supported registrar (Porkbun, Namecheap, GoDaddy, Cloudflare).",
@@ -1319,6 +1349,16 @@
     "requiredSecrets": []
   },
   {
+    "id": "com.framers.tools.trulia-search",
+    "name": "Trulia Property Search",
+    "description": "Search real estate properties on Trulia with RapidAPI or Firecrawl scrape fallback.",
+    "category": "tool",
+    "tools": [
+      "trulia_search"
+    ],
+    "requiredSecrets": []
+  },
+  {
     "id": "com.framers.tools.vision-pipeline",
     "name": "Vision & OCR Pipeline",
     "description": "Progressive vision pipeline with PaddleOCR, TrOCR, Florence-2, CLIP, and cloud vision (GPT-4o, Claude).",
@@ -1331,7 +1371,7 @@
   {
     "id": "com.framers.tools.wallet",
     "name": "Agent Personal Wallet",
-    "description": "Give agents their own personal wallet with configurable spending guardrails. Supports Solana, Ethereum, Base, and Polygon with per-category budgets, daily/monthly limits, human-in-the-loop approval thresholds (compatible with hitl.llmJudge, hitl.cli, and hitl.webhook handlers), guardrail overrides for post-approval safety checks, and Lithic virtual card integration.",
+    "description": "Give agents their own personal wallet with configurable spending guardrails. Supports Solana, Ethereum, Base, and Polygon with per-category budgets, daily/monthly limits, human-in-the-loop approval thresholds, and Lithic virtual card integration.",
     "category": "tool",
     "tools": [
       "check_wallet_balance",
@@ -1347,6 +1387,16 @@
     "requiredSecrets": [
       "WALLET_MASTER_SECRET"
     ]
+  },
+  {
+    "id": "com.framers.tools.zip-files",
+    "name": "Zip Files",
+    "description": "Create zip archives from local files for easy sharing via chat channels.",
+    "category": "tool",
+    "tools": [
+      "zip_files"
+    ],
+    "requiredSecrets": []
   },
   {
     "id": "com.framers.voice.amazon-polly",
