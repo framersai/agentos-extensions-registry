@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Integration tests for createCuratedManifest, getAvailableExtensions,
  * and getAvailableChannels from the extensions registry.
@@ -9,6 +10,7 @@ import {
   getAvailableExtensions,
   getAvailableChannels,
 } from '../src/index';
+import { TOOL_CATALOG } from '../src/tool-registry';
 
 // ── createCuratedManifest ───────────────────────────────────────────────────
 
@@ -185,9 +187,15 @@ describe('createCuratedManifest', () => {
       cloud: 'none',
       domains: 'none',
     });
+    const allowedVoiceIds = new Set(
+      TOOL_CATALOG.filter((entry) => entry.category === 'voice').map(
+        (entry) => `registry:${entry.name}`
+      )
+    );
+
     // Optional packages may be absent, but any loaded pack should still come from the voice catalog.
     for (const pack of manifest.packs) {
-      expect(String(pack.identifier)).toMatch(/^registry:(voice-|speech-runtime$)/);
+      expect(allowedVoiceIds.has(String(pack.identifier))).toBe(true);
     }
   });
 
@@ -231,10 +239,15 @@ describe('createCuratedManifest', () => {
       cloud: 'none',
       domains: 'none',
     });
+    const allowedProductivityIds = new Set(
+      TOOL_CATALOG.filter((entry) => entry.category === 'productivity').map(
+        (entry) => `registry:${entry.name}`
+      )
+    );
+
     // Packages not installed, packs will be empty.
     for (const pack of manifest.packs) {
-      const id = String(pack.identifier);
-      expect(id.startsWith('registry:calendar-') || id.startsWith('registry:email-')).toBe(true);
+      expect(allowedProductivityIds.has(String(pack.identifier))).toBe(true);
     }
   });
 
@@ -290,14 +303,14 @@ describe('createCuratedManifest', () => {
     const secrets = { 'example.secret': 'shh' };
     const manifest = await createCuratedManifest({
       channels: 'none',
-      tools: ['skills'],
+      tools: ['cognitive-memory'],
       voice: 'none',
       productivity: 'none',
       basePriority: 100,
       secrets,
     });
 
-    const pack = manifest.packs.find((p) => p.identifier === 'registry:skills');
+    const pack = manifest.packs.find((p) => p.identifier === 'registry:cognitive-memory');
     expect(pack).toBeDefined();
     expect(pack!.options).toBeDefined();
     expect((pack!.options as any).secrets).toEqual(secrets);

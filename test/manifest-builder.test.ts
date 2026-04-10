@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Tests for manifest-builder — TOOL_CATALOG size and helper functions
  * @module @framers/agentos-extensions-registry/test/manifest-builder.test

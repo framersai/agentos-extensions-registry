@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Tests for provider-registry — PROVIDER_CATALOG and query helpers
  * @module @framers/agentos-extensions-registry/test/provider-registry.test

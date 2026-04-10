@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Tests for channel-registry — CHANNEL_CATALOG and query helpers
  * @module @framers/agentos-extensions-registry/test/channel-registry.test

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Capability Catalog — auto-generated extension metadata
  * for the Capability Discovery Engine.

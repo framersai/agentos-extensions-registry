@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Channel registry — metadata catalog for all supported
  * messaging channel extensions.

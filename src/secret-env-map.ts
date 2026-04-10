@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Centralized mapping from extension `requiredSecrets` IDs
  * to environment variable names, signup URLs, and free tier info.

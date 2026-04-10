@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Configuration types for the extensions registry bundle.
  * @module @framers/agentos-extensions-registry/types

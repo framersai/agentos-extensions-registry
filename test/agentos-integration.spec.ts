@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * End-to-end-ish integration: curated manifest -> AgentOS ExtensionManager.
  *

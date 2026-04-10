@@ -1175,7 +1175,7 @@
   {
     "id": "com.framers.research.web-search",
     "name": "Web Search Extension",
-    "description": "Multi-provider web search with Firecrawl, Tavily, Serper, Brave — RRF fusion, semantic dedup, Cohere/LLM neural reranking, research aggregation, and fact-checking",
+    "description": "Multi-provider web search with Firecrawl, Tavily, Serper, Brave — RRF fusion, semantic dedup, Cohere/LLM neural reranking, research aggregation, and fact-checking for AgentOS",
     "category": "productivity",
     "tools": [
       "web_search",

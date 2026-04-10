@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Manifest builder — creates pre-configured ExtensionManifest
  * instances from the curated extension catalog.

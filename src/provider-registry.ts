@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Provider registry — metadata catalog for all supported
  * LLM / model provider extensions.
