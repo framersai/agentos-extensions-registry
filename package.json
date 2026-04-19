@@ -70,7 +70,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@framers/agentos": "^0.1.228"
+    "@framers/agentos": "^0.1.243"
   },
   "peerDependenciesMeta": {
     "@framers/agentos": {
@@ -132,8 +132,8 @@
     "@framers/agentos-ext-cloud-railway": ">=0.1.0",
     "@framers/agentos-ext-cloud-vercel": ">=0.1.0",
     "@framers/agentos-ext-code-safety": ">=0.1.0",
-    "@framers/agentos-ext-content-policy-rewriter": ">=0.1.0",
     "@framers/agentos-ext-content-extraction": ">=0.1.0",
+    "@framers/agentos-ext-content-policy-rewriter": ">=0.1.0",
     "@framers/agentos-ext-credential-vault": ">=0.1.0",
     "@framers/agentos-ext-deep-research": ">=0.1.0",
     "@framers/agentos-ext-diarization": ">=0.1.0",
@@ -224,7 +224,7 @@
     "@framers/agentos-skills": ">=1.0.0"
   },
   "devDependencies": {
-    "@framers/agentos": "^0.1.228",
+    "@framers/agentos": "workspace:^",
     "typescript": "^5.4.5",
     "vitest": "^1.0.0"
   }
