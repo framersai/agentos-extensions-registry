@@ -224,7 +224,7 @@
     "@framers/agentos-skills": "^1.0.0"
   },
   "devDependencies": {
-    "@framers/agentos": "^0.9.3",
+    "@framers/agentos": "^0.9.7",
     "typescript": "^5.4.5",
     "vitest": "^1.0.0"
   }
