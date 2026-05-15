@@ -1259,7 +1259,7 @@
   {
     "id": "com.framers.tools.citation-verifier",
     "name": "Citation Verifier",
-    "description": "Verify claims in text against sources using semantic similarity. Supports web search fallback for unverifiable claims.",
+    "description": "DEPRECATED — thin tool wrapper around the first-class @framers/agentos CitationVerifier. Kept for backwards compatibility.",
     "category": "tool",
     "tools": [
       "verify_citations"
