@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview AgentOS Extensions Registry Bundle.
  *
