@@ -45,6 +45,7 @@
   },
   "scripts": {
     "prebuild": "node scripts/generate-capability-catalog.mjs",
+    "prepare": "test -d dist || npm run build",
     "build": "tsc",
     "clean": "rm -rf dist",
     "test": "vitest run --testTimeout 60000"
