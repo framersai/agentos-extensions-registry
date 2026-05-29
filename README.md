@@ -90,7 +90,7 @@ Then install whichever extension packages you need (e.g. `@framers/agentos-ext-t
 | `createCuratedManifest(options?)` | Builds an `ExtensionManifest` from installed extensions. Accepts channel/tool filters, secrets, and per-extension overrides. |
 | `CHANNEL_CATALOG` | Static catalog of all 37 channel platform entries (platform, package, SDK, required secrets) |
 | `TOOL_CATALOG` | Static catalog of tool extensions (web search, CLI executor, image search, etc.) |
-| `PROVIDER_CATALOG` | Static catalog of 21 LLM provider entries (provider name, models, base URLs) |
+| `PROVIDER_CATALOG` | Static catalog of 27 model-provider entries: 25 LLM + 2 image (provider name, models, base URLs). 11 LLM providers ship runtime adapters in core; the rest are catalog metadata for discovery and roadmap parity. |
 | `getAvailableExtensions()` | Returns only extensions whose npm packages are resolvable in the current environment |
 | `getAvailableChannels()` | Returns only channel adapters whose packages are installed |
 | `SECRET_ENV_MAP` | Maps secret keys (e.g. `telegram.botToken`) to environment variable names |
